@@ -15,10 +15,8 @@ public class DataReader {
 	private File datafile;
 	private Scanner scan;
 	private Vector<Node> adjacencyList;
-//	private int[][] adjacencyMatrix;
 
 	public DataReader(final String filename) throws FileNotFoundException {
-		datafile = new File(filename);
 		scan = new Scanner(new BufferedReader(new FileReader(datafile)));
 		adjacencyList = new Vector<Node>();
 		if (AppDefs.DEBUG) {
@@ -28,27 +26,26 @@ public class DataReader {
 	}
 
 	public boolean readFile() {
-		//TODO: Fill in the missing nodes?
 		int greatest = 0;
 		while (scan.hasNextInt()) {
-			String line = scan.nextLine();
-			if (line.matches("\\d+\\t\\d+")) {
-				String[] vertex = line.split("\\t");
-				int fromNode = Integer.parseInt(vertex[0]);
-				int toNode = Integer.parseInt(vertex[1]);
+			String edge = scan.nextLine();
+			if (edge.matches("\\d+\\t\\d+")) {
+				String[] vertex = edge.split("\\t");
+				int source = Integer.parseInt(vertex[0]);
+				int sink = Integer.parseInt(vertex[1]);
 				boolean found = false;
 				for (Node node : adjacencyList)
-					if (node.getNodeName() == fromNode) {
-						node.addNode(toNode);
+					if (node.getNodeName() == source) {
+						node.addNode(sink);
 						found = true;
 						break;
 					}
 				if (!found) {
-					Node newnode = new Node(fromNode);
-					newnode.addNode(toNode);
+					Node newnode = new Node(source);
+					newnode.addNode(sink);
 					adjacencyList.add(newnode);
 				}
-				int tmpgreat = fromNode > toNode ? fromNode : toNode;
+				int tmpgreat = source > sink ? source : sink;
 				greatest = tmpgreat > greatest ? tmpgreat : greatest;
 			} else {
 				System.err.format("%s: Wrong File Format for file: %s\n",
@@ -62,39 +59,12 @@ public class DataReader {
 					  this.getClass().toString(), datafile.getName());
 		}
 		adjacencyList.trimToSize();
-//		/**
-//		 * TODO: Is matrix needed? Condition to create the matrix?
-//		 * Adjacency List is created during file scanning so matrix seems redundant.
-//		 * The matrix code below and else works, but won't use it till there's some reason to
-//		 */
-//		 adjacencyMatrix = new int[greatest][greatest];
-//		 for (Node node : adjacencyList) {
-//		 	int row = node.getNodeName();
-//		 	Vector<Integer> connections = node.getConnections();
-//		 	row = row == greatest ? 0 : row;
-//		 for (int connectedWith = 1; connectedWith <= greatest; connectedWith++) {
-//		 		int col = connectedWith == greatest ? 0 : connectedWith;
-//		 		if (connections.contains(connectedWith)) {
-//		 			adjacencyMatrix[row][col] = 1;
-//		 		} else {
-//		 			adjacencyMatrix[row][col] = 0;
-//		 		}
-//		 	}
-//		 }
-//
-//		 if (AppDefs.DEBUG) {
-//		 	System.out.format("%s: Filled Matrix\n", this.getClass().toString());
-//		 }
 		return true;
 	}
 
 	public Vector<Node> getAdjacencyList() {
 		return adjacencyList;
 	}
-
-//	public int[][] getAdjacencyMatrix() {
-//		return adjacencyMatrix;
-//	}
 
 	/**
 	 * Test this class
@@ -107,12 +77,12 @@ public class DataReader {
 			DataReader dr = new DataReader("data/graph1.txt");
 			if (readFile(dr)) {
 				printAdjacemcyList(dr);
-//				printAdjacencyMatrix(dr);
 			} else {
 				System.err.println("Error Reading File");
 			}
-		} catch (FileNotFoundException ex) {
+		} catch (FileNotFoundException fnfe) {
 			System.err.println("Wrong file! Please try again with different file");
+			fnfe.printStackTrace();
 			return;
 		}
 		System.out.println("------------ END OF TEST ------------");
@@ -125,16 +95,6 @@ public class DataReader {
 		System.out.println("===> readFile Runtime is: " + (System.currentTimeMillis() - startTime) + "ms");
 		return b;
 	}
-
-//	private static void printAdjacencyMatrix(DataReader dr) {
-//		long startTime = System.currentTimeMillis();
-//		for (int row = 0; row < dr.getAdjacencyMatrix().length; row++) {
-//			for (int col = 0; col < dr.getAdjacencyMatrix()[row].length; col++)
-//				System.out.print(dr.getAdjacencyMatrix()[row][col]);
-//			System.out.println();
-//		}
-//		System.out.println("===> printAdjacencyMatrix Runtime is: " + (System.currentTimeMillis() - startTime) + "ms");
-//	}
 
 	private static void printAdjacemcyList(DataReader dr) {
 		long startTime = System.currentTimeMillis();
