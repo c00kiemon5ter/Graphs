@@ -2,8 +2,9 @@ package graphs;
 
 /**
  *
- * @author Ivan Kanakarakis
+ * @author	Ivan Kanakarakis
  */
 public class AppDefs {
 	public static final String MAIN_ICON = "/Icons/pipeplus.png";
+	public static boolean DEBUG = false;
 }

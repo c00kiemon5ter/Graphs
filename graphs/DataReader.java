@@ -9,65 +9,138 @@ import java.util.Vector;
 
 /**
  *
- * @author Ivan Kanakarakis
+ * @author	Ivan Kanakarakis
  */
 public class DataReader {
 	private File datafile;
 	private Scanner scan;
-	private Vector<Node> nodes;
+	private Vector<Node> adjacencyList;
+//	private int[][] adjacencyMatrix;
 
-	public DataReader(final String filename) {
+	public DataReader(final String filename) throws FileNotFoundException {
 		datafile = new File(filename);
-		nodes = new Vector<Node>();
+		scan = new Scanner(new BufferedReader(new FileReader(datafile)));
+		adjacencyList = new Vector<Node>();
+		if (AppDefs.DEBUG) {
+			System.out.format("%s: DataReader Object initialized\n",
+					  this.getClass().toString());
+		}
 	}
 
-	public void readFile() throws FileNotFoundException {
-		//TODO: add missing nodes
-		scan = new Scanner(new BufferedReader(new FileReader(datafile)));
-		Vector<String> connectedTo = new Vector<String>();
-		Vector<String> lookupnodes = new Vector<String>();
-		String nodename = "";
-		boolean firstCol = true;
-		while (scan.hasNext()) {
-			String current = scan.next();
-			if (nodename.isEmpty()) {
-				nodename = current;
-			} else if (!firstCol) {
-				connectedTo.add(current);
-			} else if (!nodename.equals(current)) {
-				if (!lookupnodes.contains(nodename)) {
-					nodes.add(new Node(nodename, connectedTo));
-					lookupnodes.add(nodename);
-				} else {
-					for (Node node : nodes)
-						if (node.getName().equals(nodename)) {
-							node.addNodes(connectedTo);
-						}
+	public boolean readFile() {
+		//TODO: Fill in the missing nodes?
+		int greatest = 0;
+		while (scan.hasNextInt()) {
+			String line = scan.nextLine();
+			if (line.matches("\\d+\\t\\d+")) {
+				String[] vertex = line.split("\\t");
+				int fromNode = Integer.parseInt(vertex[0]);
+				int toNode = Integer.parseInt(vertex[1]);
+				boolean found = false;
+				for (Node node : adjacencyList)
+					if (node.getNodeName() == fromNode) {
+						node.addNode(toNode);
+						found = true;
+						break;
+					}
+				if (!found) {
+					Node newnode = new Node(fromNode);
+					newnode.addNode(toNode);
+					adjacencyList.add(newnode);
 				}
-				connectedTo.clear();
-				nodename = current;
+				int tmpgreat = fromNode > toNode ? fromNode : toNode;
+				greatest = tmpgreat > greatest ? tmpgreat : greatest;
+			} else {
+				System.err.format("%s: Wrong File Format for file: %s\n",
+						  this.getClass().toString(), datafile.getName());
+				return false;
 			}
-			firstCol = !firstCol;
 		}
 		scan.close();
+		if (AppDefs.DEBUG) {
+			System.out.format("%s: Read File Contents: %s\n",
+					  this.getClass().toString(), datafile.getName());
+		}
+		adjacencyList.trimToSize();
+//		/**
+//		 * TODO: Is matrix needed? Condition to create the matrix?
+//		 * Adjacency List is created during file scanning so matrix seems redundant.
+//		 * The matrix code below and else works, but won't use it till there's some reason to
+//		 */
+//		 adjacencyMatrix = new int[greatest][greatest];
+//		 for (Node node : adjacencyList) {
+//		 	int row = node.getNodeName();
+//		 	Vector<Integer> connections = node.getConnections();
+//		 	row = row == greatest ? 0 : row;
+//		 for (int connectedWith = 1; connectedWith <= greatest; connectedWith++) {
+//		 		int col = connectedWith == greatest ? 0 : connectedWith;
+//		 		if (connections.contains(connectedWith)) {
+//		 			adjacencyMatrix[row][col] = 1;
+//		 		} else {
+//		 			adjacencyMatrix[row][col] = 0;
+//		 		}
+//		 	}
+//		 }
+//
+//		 if (AppDefs.DEBUG) {
+//		 	System.out.format("%s: Filled Matrix\n", this.getClass().toString());
+//		 }
+		return true;
 	}
 
-	public Vector<Node> getNodes() {
-		return nodes;
+	public Vector<Node> getAdjacencyList() {
+		return adjacencyList;
 	}
 
-	public void setDataFile(String file) {
-		this.datafile = new File(file);
-	}
+//	public int[][] getAdjacencyMatrix() {
+//		return adjacencyMatrix;
+//	}
 
+	/**
+	 * Test this class
+	 */
 	public static void main(String[] args) {
+		System.out.println("----------- START OF TEST -----------");
+		AppDefs.DEBUG = true;
+		long startTime = System.currentTimeMillis();
 		try {
 			DataReader dr = new DataReader("data/graph1.txt");
-			dr.readFile();
-			System.out.println(dr.getNodes().toString());
+			if (readFile(dr)) {
+				printAdjacemcyList(dr);
+//				printAdjacencyMatrix(dr);
+			} else {
+				System.err.println("Error Reading File");
+			}
 		} catch (FileNotFoundException ex) {
-			System.err.println("Ooops! Something went wrong");
+			System.err.println("Wrong file! Please try again with different file");
+			return;
 		}
+		System.out.println("------------ END OF TEST ------------");
+		System.out.println("===> Test Runtime is: " + (System.currentTimeMillis() - startTime) + "ms");
+	}
+
+	private static boolean readFile(DataReader dr) {
+		long startTime = System.currentTimeMillis();
+		boolean b = dr.readFile();
+		System.out.println("===> readFile Runtime is: " + (System.currentTimeMillis() - startTime) + "ms");
+		return b;
+	}
+
+//	private static void printAdjacencyMatrix(DataReader dr) {
+//		long startTime = System.currentTimeMillis();
+//		for (int row = 0; row < dr.getAdjacencyMatrix().length; row++) {
+//			for (int col = 0; col < dr.getAdjacencyMatrix()[row].length; col++)
+//				System.out.print(dr.getAdjacencyMatrix()[row][col]);
+//			System.out.println();
+//		}
+//		System.out.println("===> printAdjacencyMatrix Runtime is: " + (System.currentTimeMillis() - startTime) + "ms");
+//	}
+
+	private static void printAdjacemcyList(DataReader dr) {
+		long startTime = System.currentTimeMillis();
+		for (Node node : dr.getAdjacencyList())
+			System.out.println(node.toString());
+		System.out.println("===> printAdjacemcyList Runtime is: " + (System.currentTimeMillis() - startTime) + "ms");
 	}
 
 }

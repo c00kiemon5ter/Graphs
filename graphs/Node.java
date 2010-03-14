@@ -1,56 +1,60 @@
 package graphs;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Vector;
 
 /**
+ * A node is an element consisted of its name
+ * and a collection of other node-names
+ * which it follows
+ * (A-->B : A follows B, B is followed by A)
  *
- * @author Ivan Kanakarakis
+ * @author	Ivan Kanakarakis
  */
 public class Node {
-	//TODO: convert name to int?
-	//TODO: use sets of nodes?
-	private String name;
-	private HashSet<String> connectedTo;
+	private int nodename;
+	private Vector<Integer> connections;
 
-	public Node(String name, Collection<String> connectedTo) {
-		this.name = name;
-		this.connectedTo = new HashSet<String>(connectedTo);
+	public Node(int nodename) {
+		this.nodename = nodename;
+		this.connections = new Vector<Integer>();
 	}
 
-	public String getName() {
-		return name;
+	public Node(int nodename, Collection<Integer> connectedTo) {
+		this.nodename = nodename;
+		this.connections = new Vector<Integer>(connectedTo);
 	}
 
-	public HashSet<String> getConnectedTo() {
-		return connectedTo;
+	public int getNodeName() {
+		return nodename;
+	}
+
+	public Vector<Integer> getConnections() {
+		return connections;
 	}
 
 	public boolean isConnectedTo(Node node) {
-		return connectedTo.contains(node.getName());
+		return connections.contains(node.getNodeName());
 	}
 
-	public void addNode(String node) {
-		connectedTo.add(node);
+	public void addNode(int node) {
+		connections.add(node);
 	}
 
-	public void addNodes(Collection<String> nodes) {
-		connectedTo.addAll(nodes);
+	public void addNodes(Collection<Integer> nodes) {
+		connections.addAll(nodes);
 	}
 
-	public String encode() {
-		StringBuffer str = new StringBuffer(connectedTo.size() << 1);
-		for (String node : connectedTo)
-			str.append(String.format("%s\t%s", name, node));
-		return str.toString();
+	public String toFileString() {
+		StringBuffer tofile = new StringBuffer(connections.size() << 1);
+		for (Integer integ : connections)
+			tofile.append(String.format("%d\t%d\n", nodename, integ));
+		return tofile.toString();
 	}
 
 	@Override
 	public String toString() {
-		String str = String.format("Node %s is connect to nodes: ", name);
-		for (String node : connectedTo)
-			str += String.format("%s ", node);
-		return str.toString();
+		return String.format("Node %d is connected to nodes %s", nodename, connections.toString());
 	}
 
 }
