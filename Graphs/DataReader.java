@@ -40,7 +40,6 @@ public class DataReader {
 			}
 		}
 		scan.close();
-		scan.close();
 		if (AppDefs.DEBUG) {
 			System.out.format("%s: Read File Contents: %s\n",
 					  this.getClass().toString(), datafile.getName());
