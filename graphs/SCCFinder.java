@@ -1,15 +1,25 @@
 package graphs;
 
-import java.util.Vector;
+import java.util.List;
+import org.jgraph.graph.DefaultEdge;
+import org.jgrapht.DirectedGraph;
+import org.jgrapht.alg.StrongConnectivityInspector;
+
 /**
  *
  * @author  Ivan Kanakarakis
  */
 public class SCCFinder {
-	private Vector<Node> graph;
+	private DirectedGraph<String, DefaultEdge> directedGraph;
+	private StrongConnectivityInspector sci;
 
-	public SCCFinder(Vector<Node> graph) {
-		this.graph = graph;
+	public SCCFinder(DirectedGraph<String, DefaultEdge> directedGraph) {
+		this.directedGraph = directedGraph;
+		sci = new StrongConnectivityInspector(this.directedGraph);
+	}
+
+	public List findStringlyConnectedSubgraphs() {
+		return sci.stronglyConnectedSubgraphs();
 	}
 
 }
