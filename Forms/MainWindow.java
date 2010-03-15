@@ -1,7 +1,7 @@
 
 package Forms;
 
-import graphs.AppDefs;
+import Graphs.AppDefs;
 
 /**
  *

@@ -1,4 +1,4 @@
-package graphs;
+package Graphs;
 
 import Forms.MainWindow;
 import java.io.FileNotFoundException;

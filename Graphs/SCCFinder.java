@@ -1,4 +1,4 @@
-package graphs;
+package Graphs;
 
 import java.util.List;
 import org.jgraph.graph.DefaultEdge;
