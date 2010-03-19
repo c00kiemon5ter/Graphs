@@ -35,6 +35,15 @@ public class TestMain {
 		// computes all the strongly connected components of the directed graph
 		SCCFinder scc = new SCCFinder(directedGraph);
 		List stronglyConnectedSubgraphs = scc.findStringlyConnectedSubgraphs();
+                //Other Data
+                System.out.println("--------Other Data--------");
+                System.out.println("SSC number: "+scc.findSCCNumber());
+                System.out.println("SCC numbers!");
+                for(int i=0;i<scc.findSCCNumber();i++)
+                {
+                    System.out.println(i+" SCC number: "+scc.findAllSCCNUmbers()[i]);
+                }
+                System.out.println("Diameter: "+(new GraphFinder(directedGraph)).Diameter());
 		// prints the strongly connected components
 		System.out.println("Strongly connected components:");
 		for (int i = 0; i < stronglyConnectedSubgraphs.size(); i++)
