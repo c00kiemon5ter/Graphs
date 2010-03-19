@@ -25,6 +25,15 @@ public class DataReader {
 		}
 	}
 
+        public DataReader(final File filename) throws FileNotFoundException {
+		datafile = filename;
+		scan = new Scanner(new BufferedReader(new FileReader(datafile)));
+		if (AppDefs.DEBUG) {
+			System.out.format("%s: DataReader Object initialized\n",
+					  this.getClass().toString());
+		}
+	}
+
 	public boolean readFile(DirectedGraph<String, DefaultEdge> directedGraph) {
 		while (scan.hasNextInt()) {
 			String edge = scan.nextLine();
