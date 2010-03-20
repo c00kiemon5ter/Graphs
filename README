@@ -1,5 +1,3 @@
-== Finding diameter and strong coherent components in directed graphs ==
-a Java implementation
-
+Finding diameter and strong coherent components in directed graphs using Java.
 This branch uses the JGraphT library.
 
