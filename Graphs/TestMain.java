@@ -34,16 +34,16 @@ public class TestMain {
 	private static void testSCCFind(DirectedGraph<String, DefaultEdge> directedGraph) {
 		// computes all the strongly connected components of the directed graph
 		SCCFinder scc = new SCCFinder(directedGraph);
-		List stronglyConnectedSubgraphs = scc.findStringlyConnectedSubgraphs();
+		List stronglyConnectedSubgraphs = scc.findStronglyConnectedSubgraphs();
                 //Other Data
                 System.out.println("--------Other Data--------");
-                System.out.println("SSC number: "+scc.findSCCNumber());
+                System.out.println("SSC number: "+scc.getSCCSize());
                 System.out.println("SCC numbers!");
-                for(int i=0;i<scc.findSCCNumber();i++)
+                for(int i=0;i<scc.getSCCSize();i++)
                 {
-                    System.out.println(i+" SCC number: "+scc.findAllSCCNUmbers()[i]);
+                    System.out.println(i+" SCC number: "+scc.getSCCSizePerSubgraph()[i]);
                 }
-                System.out.println("Diameter: "+(new GraphFinder(directedGraph)).Diameter());
+                System.out.println("Diameter: "+(new GraphFinder(directedGraph)).getGreatestDiameter());
 		// prints the strongly connected components
 		System.out.println("Strongly connected components:");
 		for (int i = 0; i < stronglyConnectedSubgraphs.size(); i++)

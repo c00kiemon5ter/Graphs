@@ -25,7 +25,7 @@ public class DataReader {
 		}
 	}
 
-        public DataReader(final File filename) throws FileNotFoundException {
+	public DataReader(final File filename) throws FileNotFoundException {
 		datafile = filename;
 		scan = new Scanner(new BufferedReader(new FileReader(datafile)));
 		if (AppDefs.DEBUG) {
@@ -37,15 +37,15 @@ public class DataReader {
 	public boolean readFile(DirectedGraph<String, DefaultEdge> directedGraph) {
 		while (scan.hasNextInt()) {
 			String edge = scan.nextLine();
-			if (edge.matches("\\d+\\s\\d+")) {
-				String[] vertex = edge.split("\\s");
-				directedGraph.addVertex(vertex[0]);
-				directedGraph.addVertex(vertex[1]);
-				directedGraph.addEdge(vertex[0], vertex[1]);
-			} else {
+			String[] vertex = edge.split("\\s");
+			if (vertex.length != 2) {
 				System.err.format("%s: Wrong File Format for file: %s\n",
 						  this.getClass().toString(), datafile.getName());
 				return false;
+			} else {
+				directedGraph.addVertex(vertex[0]);
+				directedGraph.addVertex(vertex[1]);
+				directedGraph.addEdge(vertex[0], vertex[1]);
 			}
 		}
 		scan.close();

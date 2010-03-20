@@ -14,34 +14,41 @@ import org.jgrapht.graph.Subgraph;
 public class SCCFinder {
 	private DirectedGraph<String, DefaultEdge> directedGraph;
 	private StrongConnectivityInspector sci;
+	private List StronglyConnectedSubgraphs;
+	private List StronglyConnectedSets;
+	private int sccSize;
+	private int[] sccSizes;
 
 	public SCCFinder(DirectedGraph<String, DefaultEdge> directedGraph) {
 		this.directedGraph = directedGraph;
 		sci = new StrongConnectivityInspector(this.directedGraph);
+		StronglyConnectedSubgraphs = sci.stronglyConnectedSubgraphs();
+		StronglyConnectedSets = sci.stronglyConnectedSets();
+		sccSize = StronglyConnectedSets.size();
+		findSCCSizePerSubgraph();
 	}
 
-	public List findStringlyConnectedSubgraphs() {
-		return sci.stronglyConnectedSubgraphs();
+	public List findStronglyConnectedSubgraphs() {
+		return StronglyConnectedSubgraphs;
 	}
 
-        public List findStronglyConnectedSets() {
-                return sci.stronglyConnectedSets();
-        }
+	public List findStronglyConnectedSets() {
+		return StronglyConnectedSets;
+	}
 
-        public int findSCCNumber() {
-                return this.findStronglyConnectedSets().size();
-        }
-        
-        public int[] findAllSCCNUmbers() {
-                int[] numbers = new int[this.findSCCNumber()];
-                Iterator it = this.findStringlyConnectedSubgraphs().iterator();
-                int i = 0;
-                while(it.hasNext())
-                {
-                    numbers[i] = ((Subgraph) it.next()).vertexSet().size();
-                    i++;
-                }
-                return numbers;
-        }
+	public int getSCCSize() {
+		return sccSize;
+	}
+
+	public int[] getSCCSizePerSubgraph() {
+		return sccSizes;
+	}
+
+	private void findSCCSizePerSubgraph() {
+		sccSizes = new int[sccSize];
+		Iterator iter = StronglyConnectedSubgraphs.iterator();
+		for (int pos = 0; pos < sccSize; pos++)
+			sccSizes[pos] = ((Subgraph) StronglyConnectedSubgraphs.get(pos)).vertexSet().size();
+	}
 
 }
