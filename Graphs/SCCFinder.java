@@ -1,11 +1,11 @@
 package Graphs;
 
-import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 import org.jgraph.graph.DefaultEdge;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.alg.StrongConnectivityInspector;
-import org.jgrapht.graph.Subgraph;
+import org.jgrapht.graph.DirectedSubgraph;
 
 /**
  *
@@ -13,26 +13,26 @@ import org.jgrapht.graph.Subgraph;
  */
 public class SCCFinder {
 	private DirectedGraph<String, DefaultEdge> directedGraph;
-	private StrongConnectivityInspector sci;
-	private List StronglyConnectedSubgraphs;
-	private List StronglyConnectedSets;
+	private StrongConnectivityInspector<String, DefaultEdge> sci;
+	private List<DirectedSubgraph<String, DefaultEdge>> StronglyConnectedSubgraphs;
+	private List<Set<String>> StronglyConnectedSets;
 	private int sccSize;
 	private int[] sccSizes;
 
 	public SCCFinder(DirectedGraph<String, DefaultEdge> directedGraph) {
 		this.directedGraph = directedGraph;
-		sci = new StrongConnectivityInspector(this.directedGraph);
+		sci = new StrongConnectivityInspector<String, DefaultEdge>(this.directedGraph);
 		StronglyConnectedSubgraphs = sci.stronglyConnectedSubgraphs();
 		StronglyConnectedSets = sci.stronglyConnectedSets();
 		sccSize = StronglyConnectedSets.size();
-		findSCCSizePerSubgraph();
+		calcSCCSizePerSubgraph();
 	}
 
-	public List findStronglyConnectedSubgraphs() {
+	public List<DirectedSubgraph<String, DefaultEdge>> findStronglyConnectedSubgraphs() {
 		return StronglyConnectedSubgraphs;
 	}
 
-	public List findStronglyConnectedSets() {
+	public List<Set<String>> findStronglyConnectedSets() {
 		return StronglyConnectedSets;
 	}
 
@@ -44,11 +44,10 @@ public class SCCFinder {
 		return sccSizes;
 	}
 
-	private void findSCCSizePerSubgraph() {
+	private void calcSCCSizePerSubgraph() {
 		sccSizes = new int[sccSize];
-		Iterator iter = StronglyConnectedSubgraphs.iterator();
 		for (int pos = 0; pos < sccSize; pos++)
-			sccSizes[pos] = ((Subgraph) StronglyConnectedSubgraphs.get(pos)).vertexSet().size();
+			sccSizes[pos] = StronglyConnectedSubgraphs.get(pos).vertexSet().size();
 	}
 
 }

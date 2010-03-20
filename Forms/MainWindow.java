@@ -192,8 +192,7 @@ public class MainWindow extends javax.swing.JFrame {
 				    sccSizeTextArea.append(String.format("%0" + String.valueOf(sccSizes.length).length()
 									 + "d. SCC size: %d\n", sccNum + 1, sccSizes[sccNum]));
 			    GraphFinder gf = new GraphFinder(directedGraph);
-			    gf.setGUI(this);
-			    gf.start();
+			    diameterTextField.setText(String.valueOf(gf.getGreatestDiameter()));
 		    } else {
 			    throw new FileNotFoundException();
 		    }
@@ -219,10 +218,9 @@ public class MainWindow extends javax.swing.JFrame {
         private javax.swing.JButton startButt;
         // End of variables declaration//GEN-END:variables
 
-	public void updateDiameter(int val) {
-		diameterTextField.setText(String.valueOf(val));
-	}
-
+//	public void updateDiameter(int val) {
+//		diameterTextField.setText(String.valueOf(val));
+//	}
 	private void clear() {
 		sccNumTextField.setText("");
 		diameterTextField.setText("");
