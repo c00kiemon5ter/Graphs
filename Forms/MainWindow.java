@@ -218,9 +218,6 @@ public class MainWindow extends javax.swing.JFrame {
         private javax.swing.JButton startButt;
         // End of variables declaration//GEN-END:variables
 
-//	public void updateDiameter(int val) {
-//		diameterTextField.setText(String.valueOf(val));
-//	}
 	private void clear() {
 		sccNumTextField.setText("");
 		diameterTextField.setText("");
