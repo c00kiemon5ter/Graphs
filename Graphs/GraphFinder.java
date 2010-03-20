@@ -14,8 +14,7 @@ import org.jgrapht.graph.Subgraph;
 public class GraphFinder implements Runnable {
 	private DirectedGraph digraph;
 	private int[] diamtrsArray;
-	private int maxDiamtr = 0;
-	//========
+	private int maxdiameter = 0;
 	private Thread runner;
 	private int diamint;
 	private MainWindow gui;
@@ -30,18 +29,23 @@ public class GraphFinder implements Runnable {
 		List<Subgraph> SSCGraphs = sccf.findStronglyConnectedSubgraphs();
 		diamtrsArray = new int[SSCGraphs.size()];
 		for (int pos = 0; pos < SSCGraphs.size(); pos++) {
-			String start = (String) SSCGraphs.get(pos).vertexSet().toArray()[0];
-			String finish = (String) SSCGraphs.get(pos).vertexSet().toArray()[SSCGraphs.get(pos).vertexSet().toArray().length - 1];
+			Object[] arr = SSCGraphs.get(pos).vertexSet().toArray();
+			String start = (String) arr[0], finish = (String) arr[arr.length - 1];
 			int diameter = DijkstraShortestPath.findPathBetween(digraph, start, finish).size();
 			diamtrsArray[pos] = diameter;
-			if (maxDiamtr < diameter) {
-				maxDiamtr = diameter;
+			// find max diameter as you scan
+			if (maxdiameter < diameter) {
+				maxdiameter = diameter;
+			}
+			if (AppDefs.DEBUG) {
+				System.out.format("%s \t %s \t %d \t %d \n",
+						  start, finish, diameter, maxdiameter);
 			}
 		}
 	}
 
 	public int getGreatestDiameter() {
-		return maxDiamtr;
+		return maxdiameter;
 	}
 
 	private Double[] SSCDiameters() {

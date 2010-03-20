@@ -11,8 +11,10 @@ public class Main {
 	 * @param args the command line arguments
 	 */
 	public static void main(String[] args) {
-		//TODO: change debug status via main's args
-		AppDefs.DEBUG = true;
+		for (String arg : args)
+			if (arg.equals(AppDefs.DEBUG_SYMBOL)) {
+				AppDefs.DEBUG = true;
+			}
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {

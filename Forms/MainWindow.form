@@ -26,8 +26,8 @@
           <Group type="102" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="jScrollPane1" alignment="1" pref="657" max="32767" attributes="0"/>
-                  <Component id="jPanel1" alignment="1" max="32767" attributes="0"/>
+                  <Component id="graphPane" pref="657" max="32767" attributes="0"/>
+                  <Component id="jPanel1" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -36,9 +36,9 @@
     <DimensionLayout dim="1">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" pref="219" max="32767" attributes="0"/>
-              <EmptySpace min="-2" pref="29" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="graphPane" pref="257" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Component id="jPanel1" min="-2" max="-2" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -53,38 +53,37 @@
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Group type="103" groupAlignment="0" attributes="0">
-                      <Group type="102" alignment="1" attributes="0">
+                  <Group type="103" groupAlignment="1" attributes="0">
+                      <Group type="102" attributes="0">
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="startButt" linkSize="5" alignment="1" max="32767" attributes="1"/>
+                              <Component id="openButt" linkSize="5" alignment="1" pref="97" max="32767" attributes="1"/>
+                          </Group>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="102" attributes="0">
+                                  <EmptySpace min="-2" pref="77" max="-2" attributes="0"/>
+                                  <Component id="sccSizeLabel" min="-2" max="-2" attributes="0"/>
+                              </Group>
+                              <Group type="102" attributes="0">
+                                  <EmptySpace max="-2" attributes="0"/>
+                                  <Component id="fileTextField" min="-2" pref="136" max="-2" attributes="0"/>
+                              </Group>
+                          </Group>
+                      </Group>
+                      <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="diameterLbl" alignment="1" min="-2" max="-2" attributes="0"/>
-                              <Component id="sccNumLbl" alignment="1" min="-2" max="-2" attributes="0"/>
+                              <Component id="sccNumLabel" min="-2" max="-2" attributes="0"/>
+                              <Component id="diameterLabel" alignment="1" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                              <Component id="diameterTextField" max="32767" attributes="1"/>
-                              <Component id="sccNumTextField" alignment="0" pref="100" max="32767" attributes="1"/>
-                          </Group>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
-                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                              <Component id="startBut" alignment="1" max="32767" attributes="1"/>
-                              <Component id="openBut" alignment="1" pref="97" max="32767" attributes="1"/>
-                          </Group>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Group type="102" alignment="0" attributes="0">
-                                  <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Component id="fileTextField" min="-2" pref="129" max="-2" attributes="0"/>
-                              </Group>
-                              <Group type="102" alignment="1" attributes="0">
-                                  <EmptySpace min="-2" pref="77" max="-2" attributes="0"/>
-                                  <Component id="sccSizeLbl" min="-2" max="-2" attributes="0"/>
-                              </Group>
+                              <Component id="diameterTextField" linkSize="3" max="32767" attributes="1"/>
+                              <Component id="sccNumTextField" linkSize="3" alignment="0" min="-2" pref="100" max="-2" attributes="1"/>
                           </Group>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jScrollPane2" min="-2" pref="377" max="-2" attributes="0"/>
-                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="jScrollPane2" pref="394" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -93,28 +92,27 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jScrollPane2" alignment="1" pref="143" max="32767" attributes="0"/>
+                      <Component id="jScrollPane2" alignment="0" pref="143" max="32767" attributes="0"/>
                       <Group type="102" alignment="0" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="openBut" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="fileTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="openButt" linkSize="4" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="fileTextField" linkSize="4" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="sccSizeLbl" min="-2" max="-2" attributes="0"/>
-                              <Component id="startBut" min="-2" max="-2" attributes="0"/>
+                              <Component id="sccSizeLabel" linkSize="4" min="-2" max="-2" attributes="0"/>
+                              <Component id="startButt" linkSize="4" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
+                          <EmptySpace pref="25" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="sccNumTextField" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="sccNumLbl" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="sccNumTextField" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="sccNumLabel" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="3" attributes="0">
-                              <Component id="diameterLbl" alignment="3" min="-2" max="-2" attributes="0"/>
-                              <Component id="diameterTextField" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="diameterLabel" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
+                              <Component id="diameterTextField" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -127,20 +125,20 @@
             <Property name="editable" type="boolean" value="false"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="openBut">
+        <Component class="javax.swing.JButton" name="openButt">
           <Properties>
             <Property name="text" type="java.lang.String" value="Open FIle"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openButActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="openButtActionPerformed"/>
           </Events>
         </Component>
-        <Component class="javax.swing.JButton" name="startBut">
+        <Component class="javax.swing.JButton" name="startButt">
           <Properties>
             <Property name="text" type="java.lang.String" value="Start"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startButActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startButtActionPerformed"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="sccNumTextField">
@@ -148,12 +146,12 @@
             <Property name="editable" type="boolean" value="false"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="sccNumLbl">
+        <Component class="javax.swing.JLabel" name="sccNumLabel">
           <Properties>
             <Property name="text" type="java.lang.String" value="SSC# :"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JLabel" name="sccSizeLbl">
+        <Component class="javax.swing.JLabel" name="sccSizeLabel">
           <Properties>
             <Property name="text" type="java.lang.String" value="SSC&apos;s size:"/>
           </Properties>
@@ -174,7 +172,7 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JLabel" name="diameterLbl">
+        <Component class="javax.swing.JLabel" name="diameterLabel">
           <Properties>
             <Property name="text" type="java.lang.String" value="Diameter:"/>
           </Properties>
@@ -186,7 +184,7 @@
         </Component>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JScrollPane" name="jScrollPane1">
+    <Container class="javax.swing.JScrollPane" name="graphPane">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
     </Container>
