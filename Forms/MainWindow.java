@@ -1,13 +1,11 @@
 
 package Forms;
 
-import Graphs.AppDefs;
 import Graphs.DataReader;
 import Graphs.GraphFinder;
 import Graphs.SCCFinder;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.List;
 import javax.swing.JFileChooser;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
@@ -27,7 +25,7 @@ public class MainWindow extends javax.swing.JFrame {
     /** Creates new form MainWindow */
     public MainWindow() {
 	//this.setIconImage(new javax.swing.ImageIcon(getClass().getResource(AppDefs.MAIN_ICON)).getImage());
-        this.setLocationRelativeTo(null);
+        //this.setLocationRelativeTo(null);
         initComponents();
         jButton2.setEnabled(false);
     }
@@ -184,6 +182,7 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
+        this.clear();
         DirectedGraph<String, DefaultEdge> directedGraph = new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
         try {
 			DataReader dr = new DataReader(file);
@@ -195,7 +194,11 @@ public class MainWindow extends javax.swing.JFrame {
                             {
                                 jTextArea1.append(i+" SCC size: "+scc.findAllSCCNUmbers()[i]+"\n");
                             }
-                            jTextField3.setText(""+(new GraphFinder(directedGraph)).Diameter());
+                            //double diameter = (new GraphFinder(directedGraph)).Diameter();
+                            //int x = (int) diameter;
+                            GraphFinder gf = new GraphFinder(directedGraph);
+                            gf.setGUI(this);
+                            gf.start();                            
 			}
             } catch (FileNotFoundException fnfe) {
                     System.err.println("Wrong file! Please try again with different file");
@@ -245,5 +248,16 @@ public class MainWindow extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     // End of variables declaration//GEN-END:variables
+
+
+    public void updateDiameter(int val) {
+        jTextField3.setText(""+val);
+    }
+
+    private void clear() {
+        jTextField2.setText("");
+        jTextField3.setText("");
+        jTextArea1.setText("");
+    }
 
 }

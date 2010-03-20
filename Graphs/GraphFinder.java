@@ -1,5 +1,6 @@
 package Graphs;
 
+import Forms.MainWindow;
 import java.util.Iterator;
 import java.util.List;
 import org.jgrapht.DirectedGraph;
@@ -10,9 +11,12 @@ import org.jgrapht.graph.Subgraph;
  *
  * @author Periklis Ntanasis
  */
-public class GraphFinder {
+public class GraphFinder implements Runnable{
     
-    DirectedGraph digraph;
+    private DirectedGraph digraph;
+    private Thread runner;
+    private int diamint;
+    private MainWindow gui;
     
     public GraphFinder(DirectedGraph graph) {
         this.digraph = graph;
@@ -26,15 +30,21 @@ public class GraphFinder {
         Double max;
         for(int i=0;i<SSCGraphs.size();i++)
         {
-            Iterator it = SSCGraphs.get(i).vertexSet().iterator();
-            Object start = it.next();
+            Iterator it1 = SSCGraphs.get(i).vertexSet().iterator();
+            Iterator it2;
+            Object start;
             max = 0D;
-            while(it.hasNext())
+            while(it1.hasNext())
             {
-                alg = new DijkstraShortestPath(digraph,start,it.next());
-                if(alg.getPathLength()>max)
+                start = it1.next();
+                it2 = SSCGraphs.get(i).vertexSet().iterator();
+                while(it2.hasNext())
                 {
-                    max = alg.getPathLength();
+                    alg = new DijkstraShortestPath(digraph,start,it2.next());
+                    if(alg.getPathLength()>max)
+                    {
+                        max = alg.getPathLength();
+                    }
                 }
             }
             diameters[i] = max;
@@ -53,6 +63,25 @@ public class GraphFinder {
             }
         }
         return max;
+    }
+
+    public void run() {
+        double retval = this.Diameter();
+        diamint = (int) retval;
+        gui.updateDiameter(diamint);
+    }
+
+    public void start() {
+        if(runner == null)
+        {
+            runner = new Thread(this);
+            runner.setDaemon(true);
+            runner.start();
+        }
+    }
+
+    public void setGUI(MainWindow gui) {
+        this.gui = gui;
     }
 
 }
