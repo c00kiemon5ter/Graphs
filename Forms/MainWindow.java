@@ -16,8 +16,9 @@ import org.jgrapht.graph.DefaultDirectedGraph;
  * @author Kanakarakis Ivan
  */
 public class MainWindow extends javax.swing.JFrame {
-	final JFileChooser fc = new JFileChooser();
-	File file;
+	private final JFileChooser fc;
+	private File file;
+	private DirectedGraph<String, DefaultEdge> directedGraph;
 
 	/** Creates new form MainWindow */
 	public MainWindow() {
@@ -25,6 +26,7 @@ public class MainWindow extends javax.swing.JFrame {
 		//this.setLocationRelativeTo(null);  //FIXME: Java Bug! Not working for now..
 		initComponents();
 		startButt.setEnabled(false);
+		fc = new JFileChooser();
 	}
 
 	/** This method is called from within the constructor to
@@ -48,6 +50,7 @@ public class MainWindow extends javax.swing.JFrame {
                 diameterLabel = new javax.swing.JLabel();
                 diameterTextField = new javax.swing.JTextField();
                 graphPane = new javax.swing.JScrollPane();
+                graphPanel = new javax.swing.JPanel();
 
                 setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
                 setTitle("JGraphs");
@@ -145,6 +148,19 @@ public class MainWindow extends javax.swing.JFrame {
 
                 jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {fileTextField, openButt, sccSizeLabel, startButt});
 
+                javax.swing.GroupLayout graphPanelLayout = new javax.swing.GroupLayout(graphPanel);
+                graphPanel.setLayout(graphPanelLayout);
+                graphPanelLayout.setHorizontalGroup(
+                        graphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 651, Short.MAX_VALUE)
+                );
+                graphPanelLayout.setVerticalGroup(
+                        graphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 251, Short.MAX_VALUE)
+                );
+
+                graphPane.setViewportView(graphPanel);
+
                 javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
                 getContentPane().setLayout(layout);
                 layout.setHorizontalGroup(
@@ -181,7 +197,8 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void startButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 	    this.clear();
-	    DirectedGraph<String, DefaultEdge> directedGraph = new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+	    this.repaint();
+	    directedGraph = new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
 	    try {
 		    DataReader dr = new DataReader(file);
 		    if (dr.readFile(directedGraph)) {
@@ -208,6 +225,7 @@ public class MainWindow extends javax.swing.JFrame {
         private javax.swing.JTextField diameterTextField;
         private javax.swing.JTextField fileTextField;
         private javax.swing.JScrollPane graphPane;
+        private javax.swing.JPanel graphPanel;
         private javax.swing.JPanel jPanel1;
         private javax.swing.JScrollPane jScrollPane2;
         private javax.swing.JButton openButt;

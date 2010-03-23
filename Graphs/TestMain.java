@@ -4,6 +4,7 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import org.jgraph.graph.DefaultEdge;
 import org.jgrapht.DirectedGraph;
+import org.jgrapht.ListenableGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 
 /**
