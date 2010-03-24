@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.Scanner;
 import org.jgraph.graph.DefaultEdge;
-import org.jgrapht.DirectedGraph;
+import org.jgrapht.graph.ListenableDirectedGraph;
 
 /**
  *
@@ -34,7 +34,7 @@ public class DataReader {
 		}
 	}
 
-	public boolean readFile(DirectedGraph<String, DefaultEdge> directedGraph) {
+	public boolean readFile(ListenableDirectedGraph<String, DefaultEdge> directedGraph) {
 		while (scan.hasNextInt()) {
 			String edge = scan.nextLine();
 			String[] vertex = edge.split("\\s");

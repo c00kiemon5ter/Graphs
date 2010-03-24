@@ -3,13 +3,22 @@ package Forms;
 import Graphs.DataReader;
 import Graphs.GraphFinder;
 import Graphs.SCCFinder;
+import java.awt.Color;
+import java.awt.Rectangle;
+import java.awt.geom.Rectangle2D;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Random;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import org.jgraph.JGraph;
+import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.DefaultEdge;
-import org.jgrapht.DirectedGraph;
-import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.graph.GraphConstants;
+import org.jgrapht.ext.JGraphModelAdapter;
+import org.jgrapht.graph.ListenableDirectedGraph;
 
 /**
  *
@@ -18,7 +27,7 @@ import org.jgrapht.graph.DefaultDirectedGraph;
 public class MainWindow extends javax.swing.JFrame {
 	private final JFileChooser fc;
 	private File file;
-	private DirectedGraph<String, DefaultEdge> directedGraph;
+	private JGraphModelAdapter<String, DefaultEdge> graphAdapter;
 
 	/** Creates new form MainWindow */
 	public MainWindow() {
@@ -50,7 +59,6 @@ public class MainWindow extends javax.swing.JFrame {
                 diameterLabel = new javax.swing.JLabel();
                 diameterTextField = new javax.swing.JTextField();
                 graphPane = new javax.swing.JScrollPane();
-                graphPanel = new javax.swing.JPanel();
 
                 setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
                 setTitle("JGraphs");
@@ -148,19 +156,6 @@ public class MainWindow extends javax.swing.JFrame {
 
                 jPanel1Layout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {fileTextField, openButt, sccSizeLabel, startButt});
 
-                javax.swing.GroupLayout graphPanelLayout = new javax.swing.GroupLayout(graphPanel);
-                graphPanel.setLayout(graphPanelLayout);
-                graphPanelLayout.setHorizontalGroup(
-                        graphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 651, Short.MAX_VALUE)
-                );
-                graphPanelLayout.setVerticalGroup(
-                        graphPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGap(0, 251, Short.MAX_VALUE)
-                );
-
-                graphPane.setViewportView(graphPanel);
-
                 javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
                 getContentPane().setLayout(layout);
                 layout.setHorizontalGroup(
@@ -198,7 +193,12 @@ public class MainWindow extends javax.swing.JFrame {
     private void startButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 	    this.clear();
 	    this.repaint();
-	    directedGraph = new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+	    ListenableDirectedGraph<String, DefaultEdge> directedGraph = new ListenableDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+	    graphAdapter = new JGraphModelAdapter<String, DefaultEdge>(directedGraph);
+	    JGraph graphComponent = new JGraph(graphAdapter);
+	    graphComponent.setPreferredSize(graphPane.getSize());
+	    graphComponent.setBackground(Color.LIGHT_GRAY);
+	    graphPane.add(graphComponent);
 	    try {
 		    DataReader dr = new DataReader(file);
 		    if (dr.readFile(directedGraph)) {
@@ -210,6 +210,17 @@ public class MainWindow extends javax.swing.JFrame {
 									 + "d. SCC size: %d\n", sccNum + 1, sccSizes[sccNum]));
 			    GraphFinder gf = new GraphFinder(directedGraph);
 			    diameterTextField.setText(String.valueOf(gf.getGreatestDiameter()));
+			    Random rand = new Random(50L);
+			    for (String vertex : directedGraph.vertexSet()) {
+				    //TODO: get vertex and position it;
+				    DefaultGraphCell cell = graphAdapter.getVertexCell(vertex);
+				    AttributeMap attributeMap = cell.getAttributes();
+				    Rectangle2D b = GraphConstants.getBounds(attributeMap);
+				    GraphConstants.setBounds(attributeMap, new Rectangle(rand.nextInt(200), rand.nextInt(100), (int)b.getWidth(), (int)b.getHeight()));
+				    HashMap<DefaultGraphCell, AttributeMap>cellAttr = new HashMap<DefaultGraphCell, AttributeMap>();
+				    cellAttr.put(cell, attributeMap);
+				    graphAdapter.edit(cellAttr, null, null, null);
+			    }
 		    } else {
 			    throw new FileNotFoundException();
 		    }
@@ -218,6 +229,8 @@ public class MainWindow extends javax.swing.JFrame {
 						  "Error Reading File!", JOptionPane.ERROR_MESSAGE);
 		    fnfe.printStackTrace();
 	    }
+	    //graphPane.revalidate();
+	    graphPane.repaint();
     }//GEN-LAST:event_jButton2ActionPerformed
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -225,7 +238,6 @@ public class MainWindow extends javax.swing.JFrame {
         private javax.swing.JTextField diameterTextField;
         private javax.swing.JTextField fileTextField;
         private javax.swing.JScrollPane graphPane;
-        private javax.swing.JPanel graphPanel;
         private javax.swing.JPanel jPanel1;
         private javax.swing.JScrollPane jScrollPane2;
         private javax.swing.JButton openButt;

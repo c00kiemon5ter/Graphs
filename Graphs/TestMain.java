@@ -3,9 +3,7 @@ package Graphs;
 import java.io.FileNotFoundException;
 import java.util.List;
 import org.jgraph.graph.DefaultEdge;
-import org.jgrapht.DirectedGraph;
-import org.jgrapht.ListenableGraph;
-import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.ListenableDirectedGraph;
 
 /**
  *
@@ -13,12 +11,12 @@ import org.jgrapht.graph.DefaultDirectedGraph;
  */
 public class TestMain {
 	public static void main(String[] args) {
-		DirectedGraph<String, DefaultEdge> directedGraph = new DefaultDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+		ListenableDirectedGraph<String, DefaultEdge> directedGraph = new ListenableDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
 		testDataReader(directedGraph);
 		testSCCFind(directedGraph);
 	}
 
-	private static void testDataReader(DirectedGraph<String, DefaultEdge> directedGraph) {
+	private static void testDataReader(ListenableDirectedGraph<String, DefaultEdge> directedGraph) {
 		// read file contents
 		try {
 			DataReader dr = new DataReader("data/graph1.txt");
@@ -32,7 +30,7 @@ public class TestMain {
 		}
 	}
 
-	private static void testSCCFind(DirectedGraph<String, DefaultEdge> directedGraph) {
+	private static void testSCCFind(ListenableDirectedGraph<String, DefaultEdge> directedGraph) {
 		// computes all the strongly connected components of the directed graph
 		SCCFinder scc = new SCCFinder(directedGraph);
 		List stronglyConnectedSubgraphs = scc.findStronglyConnectedSubgraphs();
