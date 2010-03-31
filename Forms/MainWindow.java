@@ -4,6 +4,7 @@ import Graphs.DataReader;
 import Graphs.GraphFinder;
 import Graphs.SCCFinder;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.io.File;
@@ -32,7 +33,7 @@ public class MainWindow extends javax.swing.JFrame {
 	/** Creates new form MainWindow */
 	public MainWindow() {
 		this.setIconImage(new javax.swing.ImageIcon(getClass().getResource(Graphs.AppDefs.MAIN_ICON)).getImage());
-		//this.setLocationRelativeTo(null);  //FIXME: Java Bug! Not working for now..
+		//this.setLocationRelativeTo(null);  //FIXME: Java Bug! Not centering the window
 		initComponents();
 		startButt.setEnabled(false);
 		fc = new JFileChooser();
@@ -196,42 +197,63 @@ public class MainWindow extends javax.swing.JFrame {
 	    ListenableDirectedGraph<String, DefaultEdge> directedGraph = new ListenableDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
 	    graphAdapter = new JGraphModelAdapter<String, DefaultEdge>(directedGraph);
 	    JGraph graphComponent = new JGraph(graphAdapter);
-	    graphComponent.setPreferredSize(graphPane.getSize());
-	    graphComponent.setBackground(Color.LIGHT_GRAY);
 	    graphPane.add(graphComponent);
-	    try {
-		    DataReader dr = new DataReader(file);
-		    if (dr.readFile(directedGraph)) {
-			    SCCFinder scc = new SCCFinder(directedGraph);
-			    int[] sccSizes = scc.getSCCSizePerSubgraph();
-			    sccNumTextField.setText(String.valueOf(sccSizes.length));
-			    for (int sccNum = 0; sccNum < sccSizes.length; sccNum++)
-				    sccSizeTextArea.append(String.format("%0" + String.valueOf(sccSizes.length).length()
-									 + "d. SCC size: %d\n", sccNum + 1, sccSizes[sccNum]));
-			    GraphFinder gf = new GraphFinder(directedGraph);
-			    diameterTextField.setText(String.valueOf(gf.getGreatestDiameter()));
-			    Random rand = new Random(50L);
-			    for (String vertex : directedGraph.vertexSet()) {
-				    //TODO: get vertex and position it;
-				    DefaultGraphCell cell = graphAdapter.getVertexCell(vertex);
-				    AttributeMap attributeMap = cell.getAttributes();
-				    Rectangle2D b = GraphConstants.getBounds(attributeMap);
-				    GraphConstants.setBounds(attributeMap, new Rectangle(rand.nextInt(200), rand.nextInt(100), (int)b.getWidth(), (int)b.getHeight()));
-				    HashMap<DefaultGraphCell, AttributeMap>cellAttr = new HashMap<DefaultGraphCell, AttributeMap>();
-				    cellAttr.put(cell, attributeMap);
-				    graphAdapter.edit(cellAttr, null, null, null);
-			    }
-		    } else {
-			    throw new FileNotFoundException();
-		    }
-	    } catch (FileNotFoundException fnfe) {
-		    JOptionPane.showMessageDialog(this, "Unable to read data\nPlease choose another file",
-						  "Error Reading File!", JOptionPane.ERROR_MESSAGE);
-		    fnfe.printStackTrace();
-	    }
-	    //graphPane.revalidate();
-	    graphPane.repaint();
+	    graphComponent.setPreferredSize(graphPane.getSize());
+	    graphComponent.setBackground(Color.ORANGE);
+	    directedGraph.addVertex("v1");
+	    directedGraph.addVertex("v2");
+	    directedGraph.addVertex("v3");
+	    directedGraph.addVertex("v4");
+	    directedGraph.addEdge("v1", "v2");
+	    directedGraph.addEdge("v2", "v3");
+	    directedGraph.addEdge("v3", "v1");
+	    directedGraph.addEdge("v4", "v3");
+	    // position vertices nicely within JGraph component
+	    positionVertexAt("v1", 130, 40);
+	    positionVertexAt("v2", 60, 200);
+	    positionVertexAt("v3", 310, 230);
+	    positionVertexAt("v4", 380, 70);
+//	    try {
+//		    DataReader dr = new DataReader(file);
+//		    if (dr.readFile(directedGraph)) {
+//			    SCCFinder scc = new SCCFinder(directedGraph);
+//			    int[] sccSizes = scc.getSCCSizePerSubgraph();
+//			    sccNumTextField.setText(String.valueOf(sccSizes.length));
+//			    for (int sccNum = 0; sccNum < sccSizes.length; sccNum++)
+//				    sccSizeTextArea.append(String.format("%0" + String.valueOf(sccSizes.length).length()
+//									 + "d. SCC size: %d\n", sccNum + 1, sccSizes[sccNum]));
+//			    GraphFinder gf = new GraphFinder(directedGraph);
+//			    diameterTextField.setText(String.valueOf(gf.getGreatestDiameter()));
+//			    Random rand = new Random(50L);
+//			    for (String vertex : directedGraph.vertexSet()) {
+//				    //TODO: get vertex and position it;
+//				    DefaultGraphCell cell = graphAdapter.getVertexCell(vertex);
+//				    AttributeMap attributeMap = cell.getAttributes();
+//				    Rectangle2D b = GraphConstants.getBounds(attributeMap);
+//				    GraphConstants.setBounds(attributeMap, new Rectangle(rand.nextInt(200), rand.nextInt(100), (int)b.getWidth(), (int)b.getHeight()));
+//				    HashMap<DefaultGraphCell, AttributeMap>cellAttr = new HashMap<DefaultGraphCell, AttributeMap>();
+//				    cellAttr.put(cell, attributeMap);
+//				    graphAdapter.edit(cellAttr, null, null, null);
+//			    }
+//		    } else {
+//			    throw new FileNotFoundException();
+//		    }
+//	    } catch (FileNotFoundException fnfe) {
+//		    JOptionPane.showMessageDialog(this, "Unable to read data\nPlease choose another file",
+//						  "Error Reading File!", JOptionPane.ERROR_MESSAGE);
+//		    fnfe.printStackTrace();
+//	    }
     }//GEN-LAST:event_jButton2ActionPerformed
+
+	private void positionVertexAt(Object vertex, int x, int y) {
+		DefaultGraphCell cell = graphAdapter.getVertexCell(vertex);
+		AttributeMap attributeMap = cell.getAttributes();
+		Rectangle2D b = GraphConstants.getBounds(attributeMap);
+		GraphConstants.setBounds(attributeMap, new Rectangle(x, y, (int) b.getWidth(), (int) b.getHeight()));
+		HashMap<DefaultGraphCell, AttributeMap> cellAttr = new HashMap<DefaultGraphCell, AttributeMap>();
+		cellAttr.put(cell, attributeMap);
+		graphAdapter.edit(cellAttr, null, null, null);
+	}
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private javax.swing.JLabel diameterLabel;
