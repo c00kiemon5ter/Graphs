@@ -13,7 +13,6 @@ import org.jgrapht.graph.DirectedSubgraph;
  */
 public class GraphFinder {
 	private DirectedGraph<String, DefaultEdge> digraph;
-	private int[] diameters;
 	private int maxdiameter = 0;
 
 	public GraphFinder(DirectedGraph<String, DefaultEdge> graph) {
@@ -23,44 +22,58 @@ public class GraphFinder {
 
 	private void calcDiameters() {
 		SCCFinder sccf = new SCCFinder(digraph);
-		List<DirectedSubgraph<String, DefaultEdge>> SSCGraphs = sccf.findStronglyConnectedSubgraphs();
-		diameters = new int[SSCGraphs.size()];
-		for (int pos = 0; pos < SSCGraphs.size(); pos++) {
-			Iterator<String> startVertexes = SSCGraphs.get(pos).vertexSet().iterator();
-			int diameter = 0;
-			while (startVertexes.hasNext()) {
-				String str = startVertexes.next();
-				Iterator<String> finishVertexes = SSCGraphs.get(pos).vertexSet().iterator();
-				while (finishVertexes.hasNext()) {
-					String fin = finishVertexes.next();
-					int tmpdiameter = DijkstraShortestPath.findPathBetween(
-						digraph, str, fin).size();
-					if (diameter < tmpdiameter) {
-						diameter = tmpdiameter;
-					}
-					if (AppDefs.DEBUG) {
-						System.out.format("StartNode: %s \tEndNode: %s \tDiamtr: %d \tSetDiamtr: %d\n",
-								  str, fin, tmpdiameter, diameter);
-					}
+		List<DirectedSubgraph<String, DefaultEdge>> sccSubgraphs = sccf.findStronglyConnectedSubgraphs();
+		// find greater SCC
+		int greatestSccSize = 0;
+		DirectedSubgraph<String, DefaultEdge> greatestScc = null;
+		for (int pos = 0; pos != sccSubgraphs.size(); pos++)
+			if (greatestSccSize < sccSubgraphs.get(pos).vertexSet().size()) {
+				greatestSccSize = sccSubgraphs.get(pos).vertexSet().size();
+				greatestScc = sccSubgraphs.get(pos);
+			}
+		// compute greatest SCC's diameter
+		Iterator<String> sourceVertexes = greatestScc.vertexSet().iterator();
+		while (sourceVertexes.hasNext()) {
+			String source = sourceVertexes.next();
+			Iterator<String> targetVertexes = greatestScc.vertexSet().iterator();
+			while (targetVertexes.hasNext()) {
+				String target = targetVertexes.next();
+				int diameter = DijkstraShortestPath.findPathBetween(
+					digraph, source, target).size();
+				if (maxdiameter < diameter) {
+					maxdiameter = diameter;
+				}
+				if (AppDefs.DEBUG) {
+					System.out.format("SourceNode: %s\tTargetNode: %s"
+							  + "\tDiamtr: %d\tMaxDiamtr: %d\n",
+							  source, target, diameter, maxdiameter);
 				}
 			}
-			diameters[pos] = diameter;
-			// find max diameter as you scan
-			if (maxdiameter < diameter) {
-				maxdiameter = diameter;
-			}
-			if (AppDefs.DEBUG) {
-				System.out.format("Current Max: %d\t..Next Set\n", maxdiameter);
-			}
 		}
+//		for (DirectedSubgraph<String, DefaultEdge> subgraph : sccSubgraphs) {
+//			Iterator<String> sourceVertexes = subgraph.vertexSet().iterator();
+//			while (sourceVertexes.hasNext()) {
+//				String source = sourceVertexes.next();
+//				Iterator<String> targetVertexes = subgraph.vertexSet().iterator();
+//				while (targetVertexes.hasNext()) {
+//					String target = targetVertexes.next();
+//					int diameter = DijkstraShortestPath.findPathBetween(
+//						digraph, source, target).size();
+//					if (maxdiameter < diameter) {
+//						maxdiameter = diameter;
+//					}
+//					if (AppDefs.DEBUG) {
+//						System.out.format("SourceNode: %s\tTargetNode: %s"
+//								  + "\tDiamtr: %d\tMaxDiamtr: %d\n",
+//								  source, target, diameter, maxdiameter);
+//					}
+//				}
+//			}
+//		}
 	}
 
 	public int getGreatestDiameter() {
 		return maxdiameter;
-	}
-
-	public int[] getDiameters() {
-		return diameters;
 	}
 
 }
