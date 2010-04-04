@@ -7,10 +7,6 @@ import org.jgrapht.DirectedGraph;
 import org.jgrapht.alg.StrongConnectivityInspector;
 import org.jgrapht.graph.DirectedSubgraph;
 
-/**
- *
- * @author  Ivan Kanakarakis
- */
 public class SCCFinder {
 	private DirectedGraph<String, DefaultEdge> directedGraph;
 	private StrongConnectivityInspector<String, DefaultEdge> sci;

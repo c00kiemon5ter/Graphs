@@ -2,10 +2,6 @@ package Graphs;
 
 import Forms.MainWindow;
 
-/**
- *
- * @author	Ivan Kanakarakis
- */
 public class Main {
 	/**
 	 * @param args the command line arguments

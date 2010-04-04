@@ -7,10 +7,6 @@ import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgraph.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedSubgraph;
 
-/**
- *
- * @author Periklis Ntanasis
- */
 public class GraphFinder {
 	private DirectedGraph<String, DefaultEdge> digraph;
 	private int maxdiameter = 0;

@@ -12,10 +12,6 @@ import org.jgraph.graph.DefaultPort;
 import org.jgraph.graph.GraphConstants;
 import org.jgrapht.graph.ListenableDirectedGraph;
 
-/**
- *
- * @author	Ivan Kanakarakis
- */
 public class DataReader {
 	private File datafile;
 	private Scanner scan;

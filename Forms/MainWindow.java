@@ -9,31 +9,32 @@ import java.io.FileNotFoundException;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import org.jgraph.JGraph;
+import org.jgraph.graph.CellView;
+import org.jgraph.graph.DefaultCellViewFactory;
 import org.jgraph.graph.DefaultEdge;
+import org.jgraph.graph.DefaultGraphCell;
+import org.jgraph.graph.EdgeView;
+import org.jgraph.graph.GraphConstants;
+import org.jgraph.graph.GraphLayoutCache;
+import org.jgraph.graph.PortView;
 import org.jgrapht.ext.JGraphModelAdapter;
 import org.jgrapht.graph.ListenableDirectedGraph;
 
-/**
- *
- * @author Kanakarakis Ivan
- */
 public class MainWindow extends javax.swing.JFrame {
 	private final JFileChooser fc;
 	private File file;
-	private ListenableDirectedGraph<String, DefaultEdge> directedGraph;
-	private JGraphModelAdapter<String, DefaultEdge> graphAdapter;
 	private JGraph graphComponent;
+	private JGraphModelAdapter<String, DefaultEdge> graphModel;
+	private GraphLayoutCache graphView;
+	private ListenableDirectedGraph<String, DefaultEdge> directedGraph;
 
 	/** Creates new form MainWindow */
 	public MainWindow() {
-		//TODO: set a layout to get vertexes non overlapping
 		//TODO: replace String-node with Node Class
 		//TODO: convert String-nodes to Int-nodes ?
-		directedGraph = new ListenableDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
-		graphAdapter = new JGraphModelAdapter<String, DefaultEdge>(directedGraph);
-		graphComponent = new JGraph(graphAdapter);
-		this.setIconImage(new javax.swing.ImageIcon(getClass().getResource(Graphs.AppDefs.MAIN_ICON)).getImage());
+		initCustomComponents();
 		initComponents();
+		this.setIconImage(new javax.swing.ImageIcon(getClass().getResource(Graphs.AppDefs.MAIN_ICON)).getImage());
 		this.setLocationRelativeTo(null);
 		startButt.setEnabled(false);
 		fc = new JFileChooser();
@@ -255,6 +256,42 @@ public class MainWindow extends javax.swing.JFrame {
 		sccsNumberTextField.setText("");
 		greatestDiameterTextField.setText("");
 		sccSizesTextArea.setText("");
+	}
+
+	private void initCustomComponents() {
+		//TODO: set a layout to get vertexes non overlapping
+		directedGraph = new ListenableDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
+		graphModel = new JGraphModelAdapter<String, DefaultEdge>(directedGraph);
+		graphView = new GraphLayoutCache(graphModel, new DefaultCellViewFactory());
+
+		for (CellView cv : graphView.getCellViews()) {
+			System.out.println("in");
+			GraphConstants.setLineStyle(cv.getAttributes(), GraphConstants.STYLE_SPLINE);
+			GraphConstants.setRouting(cv.getAttributes(), GraphConstants.ROUTING_DEFAULT);
+			GraphConstants.setLineEnd(cv.getAttributes(), GraphConstants.ARROW_SIMPLE);
+			GraphConstants.setBendable(cv.getAttributes(), true);
+			GraphConstants.setAutoSize(cv.getAttributes(), true);
+			GraphConstants.setBackground(cv.getAttributes(), Color.green);
+			GraphConstants.setConnectable(cv.getAttributes(), false);
+			GraphConstants.setDisconnectable(cv.getAttributes(), false);
+			GraphConstants.setEditable(cv.getAttributes(), false);
+//			DefaultGraphCell cell = graphModel.getCellFactory().createEdgeCell((DefaultEdge)cv.getCell());
+//			graphView.edit(cell.getAttributes());
+//			cell = graphModel.getCellFactory().createVertexCell((String)cv.getCell());
+//			graphView.edit(cell.getAttributes());
+		}
+
+		graphComponent = new JGraph(graphModel);
+		graphComponent.setAntiAliased(true);
+		graphComponent.setEditable(false);
+		graphComponent.setConnectable(false);
+		graphComponent.setDisconnectable(false);
+		graphComponent.setDisconnectOnMove(false);
+
+//		graphComponent.setGridEnabled(true);
+//		graphComponent.setGridVisible(true);
+//		graphComponent.setSelectionEnabled(false);
+//		graphComponent.setEnabled(false);
 	}
 
 }
