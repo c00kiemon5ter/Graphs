@@ -65,10 +65,10 @@ public class OrganicOptionsDialog extends javax.swing.JDialog {
                         }
                 });
 
-                edgeDistSpinner.setModel(new javax.swing.SpinnerNumberModel(0.5d, 0.0d, 1.0d, 0.5d));
+                edgeDistSpinner.setModel(new javax.swing.SpinnerNumberModel(0.5d, 0.0d, 1.0d, 0.1d));
                 edgeDistSpinner.setEnabled(false);
 
-                edgeCrossSpinner.setModel(new javax.swing.SpinnerNumberModel(0.5d, 0.0d, 1.0d, 0.5d));
+                edgeCrossSpinner.setModel(new javax.swing.SpinnerNumberModel(0.5d, 0.0d, 1.0d, 0.1d));
                 edgeCrossSpinner.setEnabled(false);
 
                 edgeDistLbl.setText("Cost Factor ");
@@ -96,7 +96,7 @@ public class OrganicOptionsDialog extends javax.swing.JDialog {
 
                 nodeDistributionLbl.setText("Cost Factor ");
 
-                nodeDistributionSpinner.setModel(new javax.swing.SpinnerNumberModel(0.5d, 0.0d, 1.0d, 0.5d));
+                nodeDistributionSpinner.setModel(new javax.swing.SpinnerNumberModel(0.5d, 0.0d, 1.0d, 0.1d));
                 nodeDistributionSpinner.setEnabled(false);
 
                 randomElements.setText("Make use of random elements (non deterministic output)");
@@ -110,12 +110,12 @@ public class OrganicOptionsDialog extends javax.swing.JDialog {
                         }
                 });
 
-                edgeLengthSpinner.setModel(new javax.swing.SpinnerNumberModel(0.5d, 0.0d, 1.0d, 0.5d));
+                edgeLengthSpinner.setModel(new javax.swing.SpinnerNumberModel(0.5d, 0.0d, 1.0d, 0.1d));
                 edgeLengthSpinner.setEnabled(false);
 
                 edgeLengthLbl.setText("Cost Factor ");
 
-                borderLineSpinner.setModel(new javax.swing.SpinnerNumberModel(0.5d, 0.0d, 1.0d, 0.5d));
+                borderLineSpinner.setModel(new javax.swing.SpinnerNumberModel(0.5d, 0.0d, 1.0d, 0.1d));
                 borderLineSpinner.setEnabled(false);
 
                 borderLineLbl.setText("Cost Factor ");

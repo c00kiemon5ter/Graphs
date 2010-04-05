@@ -113,7 +113,7 @@
     <Component class="javax.swing.JSpinner" name="edgeDistSpinner">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="0.5" maximum="1.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.5" type="number"/>
+          <SpinnerModel initial="0.5" maximum="1.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.1" type="number"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
@@ -121,7 +121,7 @@
     <Component class="javax.swing.JSpinner" name="edgeCrossSpinner">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="0.5" maximum="1.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.5" type="number"/>
+          <SpinnerModel initial="0.5" maximum="1.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.1" type="number"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
@@ -163,7 +163,7 @@
     <Component class="javax.swing.JSpinner" name="nodeDistributionSpinner">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="0.5" maximum="1.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.5" type="number"/>
+          <SpinnerModel initial="0.5" maximum="1.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.1" type="number"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
@@ -189,7 +189,7 @@
     <Component class="javax.swing.JSpinner" name="edgeLengthSpinner">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="0.5" maximum="1.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.5" type="number"/>
+          <SpinnerModel initial="0.5" maximum="1.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.1" type="number"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
@@ -202,7 +202,7 @@
     <Component class="javax.swing.JSpinner" name="borderLineSpinner">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="0.5" maximum="1.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.5" type="number"/>
+          <SpinnerModel initial="0.5" maximum="1.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.1" type="number"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
