@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<Form version="1.5" maxVersion="1.7" type="org.netbeans.modules.form.forminfo.JDialogFormInfo">
+  <Properties>
+    <Property name="defaultCloseOperation" type="int" value="2"/>
+    <Property name="title" type="java.lang.String" value="Organic Layout Settings"/>
+    <Property name="locationByPlatform" type="boolean" value="true"/>
+  </Properties>
+  <SyntheticProperties>
+    <SyntheticProperty name="formSizePolicy" type="int" value="1"/>
+  </SyntheticProperties>
+  <AuxValues>
+    <AuxValue name="FormSettings_autoResourcing" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_autoSetComponentName" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_generateFQN" type="java.lang.Boolean" value="true"/>
+    <AuxValue name="FormSettings_generateMnemonicsCode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_i18nAutoMode" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_layoutCodeTarget" type="java.lang.Integer" value="1"/>
+    <AuxValue name="FormSettings_listenerGenerationStyle" type="java.lang.Integer" value="0"/>
+    <AuxValue name="FormSettings_variablesLocal" type="java.lang.Boolean" value="false"/>
+    <AuxValue name="FormSettings_variablesModifier" type="java.lang.Integer" value="2"/>
+  </AuxValues>
+
+  <Layout>
+    <DimensionLayout dim="0">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="randomElements" alignment="0" min="-2" max="-2" attributes="0"/>
+                  <Group type="102" alignment="1" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="edgeLength" linkSize="1" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="nodeDistribution" linkSize="1" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="edgeDist" linkSize="1" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="borderLine" linkSize="1" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Component id="edgeCross" linkSize="1" alignment="0" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="40" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="nodeDistributionLbl" linkSize="4" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="edgeDistLbl" linkSize="4" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="borderLineLbl" linkSize="4" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="edgeLengthLbl" linkSize="4" alignment="1" min="-2" max="-2" attributes="0"/>
+                          <Component id="edgeCrossLbl" linkSize="4" alignment="1" min="-2" max="-2" attributes="0"/>
+                      </Group>
+                      <EmptySpace pref="18" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="ok" linkSize="3" alignment="1" max="32767" attributes="1"/>
+                          <Component id="edgeCrossSpinner" linkSize="3" alignment="1" max="32767" attributes="1"/>
+                          <Component id="edgeDistSpinner" linkSize="3" alignment="1" max="32767" attributes="1"/>
+                          <Component id="borderLineSpinner" linkSize="3" alignment="1" max="32767" attributes="1"/>
+                          <Component id="edgeLengthSpinner" linkSize="3" alignment="1" max="32767" attributes="1"/>
+                          <Component id="nodeDistributionSpinner" linkSize="3" alignment="1" pref="47" max="32767" attributes="1"/>
+                      </Group>
+                  </Group>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+    <DimensionLayout dim="1">
+      <Group type="103" groupAlignment="0" attributes="0">
+          <Group type="102" alignment="0" attributes="0">
+              <EmptySpace max="-2" attributes="0"/>
+              <Component id="randomElements" linkSize="2" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="nodeDistribution" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="nodeDistributionSpinner" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="nodeDistributionLbl" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="edgeLength" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="edgeLengthLbl" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="edgeLengthSpinner" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="edgeCrossLbl" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="edgeCrossSpinner" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="edgeCross" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="edgeDist" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="edgeDistLbl" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="edgeDistSpinner" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace max="-2" attributes="0"/>
+              <Group type="103" groupAlignment="3" attributes="0">
+                  <Component id="borderLine" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="borderLineLbl" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="borderLineSpinner" linkSize="2" alignment="3" min="-2" max="-2" attributes="0"/>
+              </Group>
+              <EmptySpace pref="17" max="32767" attributes="0"/>
+              <Component id="ok" linkSize="2" min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
+          </Group>
+      </Group>
+    </DimensionLayout>
+  </Layout>
+  <SubComponents>
+    <Component class="javax.swing.JCheckBox" name="borderLine">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Optimize Border Line Bounds"/>
+      </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="borderLineStateChanged"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="edgeDistSpinner">
+      <Properties>
+        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+          <SpinnerModel initial="0.5" maximum="1.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.5" type="number"/>
+        </Property>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="edgeCrossSpinner">
+      <Properties>
+        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+          <SpinnerModel initial="0.5" maximum="1.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.5" type="number"/>
+        </Property>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="edgeDistLbl">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Cost Factor "/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="edgeDist">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Optimize Edge Distance"/>
+      </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="edgeDistStateChanged"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="nodeDistribution">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Optimize Node Distribution"/>
+      </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="nodeDistributionStateChanged"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="edgeLength">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Optimize Edge Length"/>
+      </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="edgeLengthStateChanged"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JLabel" name="nodeDistributionLbl">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Cost Factor "/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="nodeDistributionSpinner">
+      <Properties>
+        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+          <SpinnerModel initial="0.5" maximum="1.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.5" type="number"/>
+        </Property>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="randomElements">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Make use of random elements (non deterministic output)"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="edgeCrossLbl">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Cost Factor "/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JCheckBox" name="edgeCross">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Optimize Edge Crossing"/>
+      </Properties>
+      <Events>
+        <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="edgeCrossStateChanged"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="edgeLengthSpinner">
+      <Properties>
+        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+          <SpinnerModel initial="0.5" maximum="1.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.5" type="number"/>
+        </Property>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="edgeLengthLbl">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Cost Factor "/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JSpinner" name="borderLineSpinner">
+      <Properties>
+        <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
+          <SpinnerModel initial="0.5" maximum="1.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.5" type="number"/>
+        </Property>
+        <Property name="enabled" type="boolean" value="false"/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JLabel" name="borderLineLbl">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Cost Factor "/>
+      </Properties>
+    </Component>
+    <Component class="javax.swing.JButton" name="ok">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="OK"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="okActionPerformed"/>
+      </Events>
+    </Component>
+  </SubComponents>
+</Form>

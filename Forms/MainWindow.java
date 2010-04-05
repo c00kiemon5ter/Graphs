@@ -30,6 +30,7 @@ import org.jgrapht.graph.ListenableDirectedGraph;
 public class MainWindow extends javax.swing.JFrame {
 	private File file;
 	private JFileChooser fc;
+	private OrganicOptionsDialog organic;
 	private JGraph graphComponent;
 	private JGraphFacade graphFacade;
 	private JGraphLayout graphLayout;
@@ -47,6 +48,7 @@ public class MainWindow extends javax.swing.JFrame {
 		this.setLocationRelativeTo(null);
 		startButt.setEnabled(false);
 		debugItm.setSelected(AppDefs.DEBUG);
+		organic = new OrganicOptionsDialog(this, true, false);
 	}
 
 	private void initGraphComponents() {
@@ -91,7 +93,7 @@ public class MainWindow extends javax.swing.JFrame {
                 openItm = new javax.swing.JMenuItem();
                 imgItm = new javax.swing.JMenuItem();
                 printItm = new javax.swing.JMenuItem();
-                jMenuItem1 = new javax.swing.JMenuItem();
+                exit = new javax.swing.JMenuItem();
                 editMenu = new javax.swing.JMenu();
                 bendEdgeItm = new javax.swing.JCheckBoxMenuItem();
                 layoutsMenu = new javax.swing.JMenu();
@@ -238,15 +240,15 @@ public class MainWindow extends javax.swing.JFrame {
                 });
                 fileMenu.add(printItm);
 
-                jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
-                jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/exit.png"))); // NOI18N
-                jMenuItem1.setText("Exit");
-                jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
+                exit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.CTRL_MASK));
+                exit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/exit.png"))); // NOI18N
+                exit.setText("Exit");
+                exit.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
-                                jMenuItem1ActionPerformed(evt);
+                                exitActionPerformed(evt);
                         }
                 });
-                fileMenu.add(jMenuItem1);
+                fileMenu.add(exit);
 
                 menubar.add(fileMenu);
 
@@ -315,7 +317,7 @@ public class MainWindow extends javax.swing.JFrame {
                 aboutMenu.setText("Help");
 
                 helpItm.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_F1, 0));
-                helpItm.setText("Help");
+                helpItm.setText("Help Contents");
                 helpItm.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
                                 helpItmActionPerformed(evt);
@@ -498,20 +500,44 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_randomRadioActionPerformed
 
     private void organicRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_organicRadioActionPerformed
-	    //TODO: create parameter window
+	    graphLayout = new JGraphOrganicLayout(graphPane.getVisibleRect());
+	    organic.setVisible(true);
+	    ((JGraphOrganicLayout) graphLayout).setFineTuning(true);
+	    ((JGraphOrganicLayout) graphLayout).setDeterministic(!organic.isRandom());
+	    if (organic.isEdgeCrossSelected()) {
+		    ((JGraphOrganicLayout) graphLayout).setEdgeCrossingCostFactor(organic.getEdgeCrossValue());
+	    }
+	    if (organic.isEdgeDistSelected()) {
+		    ((JGraphOrganicLayout) graphLayout).setEdgeDistanceCostFactor(organic.getEdgeDistValue());
+	    }
+	    if (organic.isEdgeLengthSelected()) {
+		    ((JGraphOrganicLayout) graphLayout).setEdgeLengthCostFactor(organic.getsEdgeLengthValue());
+	    }
+	    if (organic.isNodeDistributionSelected()) {
+		    ((JGraphOrganicLayout) graphLayout).setNodeDistributionCostFactor(organic.getNodeDistributionValue());
+	    }
+	    if (organic.isBorderLineSelected()) {
+		    ((JGraphOrganicLayout) graphLayout).setBorderLineCostFactor(organic.getBorderLineValue());
+	    }
+	    graphLayout.run(graphFacade);
+	    graphComponent.getGraphLayoutCache().edit(graphFacade.createNestedMap(true, true));
     }//GEN-LAST:event_organicRadioActionPerformed
 
-    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+    private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
 	    this.dispose();
 	    System.exit(0);
-    }//GEN-LAST:event_jMenuItem1ActionPerformed
+    }//GEN-LAST:event_exitActionPerformed
 
     private void helpItmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpItmActionPerformed
-	    //TODO: what should 'help' do ?
+	    String help = String.format("Usefull Phone Numbers:\n\n%s\n%s\n%s\n%s",
+					AppDefs.police, AppDefs.fires, AppDefs.calls, AppDefs.cars);
+	    JOptionPane.showMessageDialog(this, help, "Help", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_helpItmActionPerformed
 
     private void authorsItmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_authorsItmActionPerformed
-	    //TODO: list authors, add some image?, add a funny line
+	    String authors = String.format("Authors:\n\n%s\n%s\n\n%s",
+					   AppDefs.c00kie, AppDefs.master, AppDefs.fortune);
+	    JOptionPane.showMessageDialog(this, authors, "Authors", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_authorsItmActionPerformed
 
     private void debugItmStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_debugItmStateChanged
@@ -533,13 +559,13 @@ public class MainWindow extends javax.swing.JFrame {
         private javax.swing.JCheckBoxMenuItem debugItm;
         private javax.swing.JLabel diameterLabel;
         private javax.swing.JMenu editMenu;
+        private javax.swing.JMenuItem exit;
         private javax.swing.JMenu fileMenu;
         private javax.swing.JScrollPane graphPane;
         private javax.swing.JTextField greatestDiameterTextField;
         private javax.swing.JMenuItem helpItm;
         private javax.swing.JMenuItem imgItm;
         private javax.swing.JPanel infoPanel;
-        private javax.swing.JMenuItem jMenuItem1;
         private javax.swing.JScrollPane jScrollPane2;
         private javax.swing.JPopupMenu.Separator jSeparator1;
         private javax.swing.ButtonGroup layoutsGroup;
