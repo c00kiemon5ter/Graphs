@@ -6,6 +6,15 @@
     </Component>
     <Menu class="javax.swing.JMenuBar" name="menubar">
       <SubComponents>
+        <Menu class="javax.swing.JMenu" name="ready">
+          <Properties>
+            <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor" postCode="ready.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource(&quot;/Icons/flag-green.png&quot;)));">
+              <Image iconType="3" name="/Icons/flag-green.png"/>
+            </Property>
+            <Property name="enabled" type="boolean" value="false"/>
+            <Property name="iconTextGap" type="int" value="0"/>
+          </Properties>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="fileMenu">
           <Properties>
             <Property name="text" type="java.lang.String" value="File"/>
@@ -216,7 +225,7 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="graphPane" pref="289" max="32767" attributes="0"/>
+              <Component id="graphPane" pref="293" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="infoPanel" min="-2" max="-2" attributes="0"/>
               <EmptySpace min="-2" max="-2" attributes="0"/>
@@ -301,7 +310,7 @@
             <Property name="text" type="java.lang.String" value="Start"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startButtActionPerformed"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="startButtActionPerformed,readyStateBusy,clearFields,readyStateOk"/>
           </Events>
         </Component>
         <Component class="javax.swing.JTextField" name="sccsNumberTextField">

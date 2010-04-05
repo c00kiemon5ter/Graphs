@@ -16,6 +16,8 @@ import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -89,6 +91,7 @@ public class MainWindow extends javax.swing.JFrame {
                 sccSizesTextArea = new javax.swing.JTextArea();
                 graphPane = new javax.swing.JScrollPane(graphComponent);
                 menubar = new javax.swing.JMenuBar();
+                ready = new javax.swing.JMenu();
                 fileMenu = new javax.swing.JMenu();
                 openItm = new javax.swing.JMenuItem();
                 imgItm = new javax.swing.JMenuItem();
@@ -114,6 +117,9 @@ public class MainWindow extends javax.swing.JFrame {
                 startButt.addActionListener(new java.awt.event.ActionListener() {
                         public void actionPerformed(java.awt.event.ActionEvent evt) {
                                 startButtActionPerformed(evt);
+                                readyStateBusy(evt);
+                                clearFields(evt);
+                                readyStateOk(evt);
                         }
                 });
 
@@ -205,6 +211,12 @@ public class MainWindow extends javax.swing.JFrame {
                 infoPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {datafileTextField, openButt, sccSizeLabel, startButt});
 
                 graphPane.setBackground(Color.red);
+
+                ready.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/flag-green.png"))); // NOI18N
+                ready.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/flag-green.png")));
+                ready.setEnabled(false);
+                ready.setIconTextGap(0);
+                menubar.add(ready);
 
                 fileMenu.setText("File");
 
@@ -352,7 +364,7 @@ public class MainWindow extends javax.swing.JFrame {
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(graphPane, javax.swing.GroupLayout.DEFAULT_SIZE, 289, Short.MAX_VALUE)
+                                .addComponent(graphPane, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(infoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
@@ -373,7 +385,6 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void startButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-	    clearFields();
 	    try {
 		    DataReader dr = new DataReader(file);
 		    if (dr.readFile(directedGraph)) {
@@ -544,11 +555,27 @@ public class MainWindow extends javax.swing.JFrame {
 	    AppDefs.DEBUG = debugItm.isSelected();
     }//GEN-LAST:event_debugItmStateChanged
 
-	private void clearFields() {
-		sccsNumberTextField.setText("");
-		greatestDiameterTextField.setText("");
-		sccSizesTextArea.setText("");
-	}
+    private void readyStateBusy(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_readyStateBusy
+	    ready.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/flag-red.png")));
+	    ready.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/flag-red.png")));
+	    ready.revalidate();
+	    ready.repaint();
+	    menubar.repaint();
+    }//GEN-LAST:event_readyStateBusy
+
+    private void clearFields(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_clearFields
+	    sccsNumberTextField.setText("");
+	    greatestDiameterTextField.setText("");
+	    sccSizesTextArea.setText("");
+    }//GEN-LAST:event_clearFields
+
+    private void readyStateOk(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_readyStateOk
+	    ready.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/flag-green.png")));
+	    ready.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/flag-green.png")));
+	    ready.revalidate();
+	    ready.repaint();
+	    menubar.repaint();
+    }//GEN-LAST:event_readyStateOk
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private javax.swing.JMenu aboutMenu;
@@ -576,6 +603,7 @@ public class MainWindow extends javax.swing.JFrame {
         private javax.swing.JRadioButtonMenuItem organicRadio;
         private javax.swing.JMenuItem printItm;
         private javax.swing.JRadioButtonMenuItem randomRadio;
+        private javax.swing.JMenu ready;
         private javax.swing.JLabel sccNumLabel;
         private javax.swing.JLabel sccSizeLabel;
         private javax.swing.JTextArea sccSizesTextArea;
