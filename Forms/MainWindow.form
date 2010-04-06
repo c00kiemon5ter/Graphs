@@ -85,7 +85,7 @@
             <Property name="text" type="java.lang.String" value="Edit"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="edgeStyleItm">
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="edgeStyleCheck">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+B"/>
@@ -93,7 +93,7 @@
                 <Property name="text" type="java.lang.String" value="Bend Edges"/>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="edgeStyleItmStateChanged"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="edgeStyleCheckActionPerformed"/>
               </Events>
             </MenuItem>
             <Menu class="javax.swing.JMenu" name="layoutsMenu">
@@ -145,16 +145,28 @@
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="organicRadioActionPerformed"/>
                   </Events>
                 </MenuItem>
+                <MenuItem class="javax.swing.JRadioButtonMenuItem" name="fastOrganic">
+                  <Properties>
+                    <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
+                      <ComponentRef name="layoutsGroup"/>
+                    </Property>
+                    <Property name="selected" type="boolean" value="true"/>
+                    <Property name="text" type="java.lang.String" value="Fast Organic"/>
+                  </Properties>
+                  <Events>
+                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="fastOrganicActionPerformed"/>
+                  </Events>
+                </MenuItem>
               </SubComponents>
             </Menu>
             <MenuItem class="javax.swing.JPopupMenu$Separator" name="jSeparator1">
             </MenuItem>
-            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="debugItm">
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="debugCheck">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Debug"/>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="debugItmStateChanged"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="debugCheckActionPerformed"/>
               </Events>
             </MenuItem>
           </SubComponents>

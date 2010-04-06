@@ -7,6 +7,7 @@ import Graphs.SCCFinder;
 import com.jgraph.layout.JGraphFacade;
 import com.jgraph.layout.JGraphLayout;
 import com.jgraph.layout.graph.JGraphSimpleLayout;
+import com.jgraph.layout.organic.JGraphFastOrganicLayout;
 import com.jgraph.layout.organic.JGraphOrganicLayout;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
@@ -29,7 +30,6 @@ import org.jgraph.graph.DefaultEdge;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgrapht.ext.JGraphModelAdapter;
-import org.jgrapht.graph.DirectedSubgraph;
 import org.jgrapht.graph.ListenableDirectedGraph;
 
 public class MainWindow extends javax.swing.JFrame {
@@ -39,6 +39,7 @@ public class MainWindow extends javax.swing.JFrame {
 	private JGraph graphComponent;
 	private JGraphFacade graphFacade;
 	private JGraphLayout graphLayout;
+	private SCCFinder sccf;
 	private ListenableDirectedGraph<String, DefaultEdge> directedGraph;
 	private JGraphModelAdapter<String, DefaultEdge> graphModel;
 
@@ -86,14 +87,15 @@ public class MainWindow extends javax.swing.JFrame {
                 printItm = new javax.swing.JMenuItem();
                 exit = new javax.swing.JMenuItem();
                 editMenu = new javax.swing.JMenu();
-                edgeStyleItm = new javax.swing.JCheckBoxMenuItem();
+                edgeStyleCheck = new javax.swing.JCheckBoxMenuItem();
                 layoutsMenu = new javax.swing.JMenu();
                 cyrcleRadio = new javax.swing.JRadioButtonMenuItem();
                 tiltRadio = new javax.swing.JRadioButtonMenuItem();
                 randomRadio = new javax.swing.JRadioButtonMenuItem();
                 organicRadio = new javax.swing.JRadioButtonMenuItem();
+                fastOrganic = new javax.swing.JRadioButtonMenuItem();
                 jSeparator1 = new javax.swing.JPopupMenu.Separator();
-                debugItm = new javax.swing.JCheckBoxMenuItem();
+                debugCheck = new javax.swing.JCheckBoxMenuItem();
                 aboutMenu = new javax.swing.JMenu();
                 helpItm = new javax.swing.JMenuItem();
                 authorsItm = new javax.swing.JMenuItem();
@@ -251,14 +253,14 @@ public class MainWindow extends javax.swing.JFrame {
 
                 editMenu.setText("Edit");
 
-                edgeStyleItm.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_MASK));
-                edgeStyleItm.setText("Bend Edges");
-                edgeStyleItm.addChangeListener(new javax.swing.event.ChangeListener() {
-                        public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                                edgeStyleItmStateChanged(evt);
+                edgeStyleCheck.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_B, java.awt.event.InputEvent.CTRL_MASK));
+                edgeStyleCheck.setText("Bend Edges");
+                edgeStyleCheck.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                edgeStyleCheckActionPerformed(evt);
                         }
                 });
-                editMenu.add(edgeStyleItm);
+                editMenu.add(edgeStyleCheck);
 
                 layoutsMenu.setText("Layouts");
 
@@ -298,16 +300,26 @@ public class MainWindow extends javax.swing.JFrame {
                 });
                 layoutsMenu.add(organicRadio);
 
+                layoutsGroup.add(fastOrganic);
+                fastOrganic.setSelected(true);
+                fastOrganic.setText("Fast Organic");
+                fastOrganic.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                fastOrganicActionPerformed(evt);
+                        }
+                });
+                layoutsMenu.add(fastOrganic);
+
                 editMenu.add(layoutsMenu);
                 editMenu.add(jSeparator1);
 
-                debugItm.setText("Debug");
-                debugItm.addChangeListener(new javax.swing.event.ChangeListener() {
-                        public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                                debugItmStateChanged(evt);
+                debugCheck.setText("Debug");
+                debugCheck.addActionListener(new java.awt.event.ActionListener() {
+                        public void actionPerformed(java.awt.event.ActionEvent evt) {
+                                debugCheckActionPerformed(evt);
                         }
                 });
-                editMenu.add(debugItm);
+                editMenu.add(debugCheck);
 
                 menubar.add(editMenu);
 
@@ -361,7 +373,7 @@ public class MainWindow extends javax.swing.JFrame {
 	private void initCustomComponents() {
 		this.setIconImage(new javax.swing.ImageIcon(getClass().getResource(Graphs.AppDefs.MAIN_ICON)).getImage());
 		this.setLocationRelativeTo(null);
-		debugItm.setSelected(AppDefs.DEBUG);
+		debugCheck.setSelected(AppDefs.DEBUG);
 		organic = new OrganicOptionsDialog(this, true, false);
 	}
 
@@ -425,11 +437,12 @@ public class MainWindow extends javax.swing.JFrame {
 					Vector<SwingWorker> workers = new Vector<SwingWorker>();
 					workers.add(visualizeGraphWorker());
 					workers.add(computeGraphWorker());
+					workers.add(colorfyWorker());
 					for (SwingWorker worker : workers)
 						worker.execute();
 					stateWorker(workers).execute();
-					SCCFinder scc = new SCCFinder(directedGraph);
-					int[] sccSizes = scc.getSCCSizePerSubgraph();
+					sccf = new SCCFinder(directedGraph);
+					int[] sccSizes = sccf.getSCCSizePerSubgraph();
 					sccsNumberTextField.setText(String.valueOf(sccSizes.length));
 					for (int sccNum = 0; sccNum < sccSizes.length; sccNum++)
 						sccSizesTextArea.append(String.format("%0" + String.valueOf(sccSizes.length).length()
@@ -448,7 +461,7 @@ public class MainWindow extends javax.swing.JFrame {
 		return new SwingWorker<GraphFinder, Void>() {
 			@Override
 			protected GraphFinder doInBackground() throws Exception {
-				return new GraphFinder(directedGraph);
+				return new GraphFinder(directedGraph, sccf);
 			}
 
 			@Override
@@ -476,7 +489,10 @@ public class MainWindow extends javax.swing.JFrame {
 			protected Void doInBackground() throws Exception {
 				initGraphComponents();
 				for (CellView cv : graphComponent.getGraphLayoutCache().getAllViews()) {
-					switchEdgeStyle(cv);
+					if (graphComponent.getModel().isEdge(cv.getCell())) {
+						switchEdgeStyle(cv);
+						GraphConstants.setSelectable(cv.getAttributes(), false);
+					}
 					GraphConstants.setBendable(cv.getAttributes(), false);
 					GraphConstants.setConnectable(cv.getAttributes(), false);
 					GraphConstants.setDisconnectable(cv.getAttributes(), false);
@@ -484,13 +500,14 @@ public class MainWindow extends javax.swing.JFrame {
 					GraphConstants.setMoveable(cv.getAttributes(), true);
 					GraphConstants.setEditable(cv.getAttributes(), false);
 					GraphConstants.setAutoSize(cv.getAttributes(), true);
-					GraphConstants.setLineColor(cv.getAttributes(), Color.gray);
-					GraphConstants.setBackground(cv.getAttributes(), Color.green);
+					GraphConstants.setLineColor(cv.getAttributes(), Color.GRAY);
+					GraphConstants.setBackground(cv.getAttributes(), Color.GREEN);
 					GraphConstants.setLineEnd(cv.getAttributes(), GraphConstants.ARROW_SIMPLE);
 					graphComponent.getGraphLayoutCache().edit(graphComponent.getModel().getAttributes(cv));
 				}
 				if (graphLayout == null) {
-					graphLayout = new JGraphOrganicLayout(graphPane.getVisibleRect());
+					graphLayout = new JGraphFastOrganicLayout();
+					//graphLayout = new JGraphOrganicLayout(graphPane.getVisibleRect());
 				}
 				graphLayout.run(graphFacade);
 				return null;
@@ -501,35 +518,45 @@ public class MainWindow extends javax.swing.JFrame {
 				graphComponent.getGraphLayoutCache().edit(graphFacade.createNestedMap(true, true));
 				imgItm.setEnabled(true);
 				printItm.setEnabled(true);
-				colorfy();
 			}
 
 		};
 	}
 
-	private void colorfy() {
-		Color[] colors = new Color[]{Color.BLACK, Color.BLUE, Color.CYAN, Color.DARK_GRAY,
-					     Color.GRAY, Color.GREEN, Color.LIGHT_GRAY, Color.MAGENTA,
-					     Color.ORANGE, Color.PINK, Color.RED,
-					     Color.black, Color.blue, Color.cyan, Color.darkGray,
-					     Color.gray, Color.green, Color.lightGray, Color.magenta,
-					     Color.orange, Color.pink, Color.red};
-		int col = 0;
-		SCCFinder scc = new SCCFinder(directedGraph);
-		for (Set<String> set : scc.findStronglyConnectedSets()) {
-			if (col == colors.length)
-				col = 0;
-			Color color = colors[col++];
-			for (String str : set)
-				for (CellView cv : graphComponent.getGraphLayoutCache().getAllViews())
-					if (cv.getCell() != null) {
-						if (str.equalsIgnoreCase(cv.getCell().toString())) {
-							GraphConstants.setBackground(cv.getAttributes(), color);
-							graphComponent.getGraphLayoutCache().edit(graphComponent.getModel().getAttributes(cv));
-							break;
-						}
+	private SwingWorker colorfyWorker() {
+		return new SwingWorker<Void, Void>() {
+			@Override
+			protected Void doInBackground() throws Exception {
+				int pos = 0;
+				Color[] colors = new Color[]{Color.BLACK, Color.BLUE, Color.CYAN,
+							     Color.DARK_GRAY, Color.GRAY, Color.GREEN,
+							     Color.LIGHT_GRAY, Color.MAGENTA,
+							     Color.ORANGE, Color.RED};
+				for (Set<String> set : sccf.findStronglyConnectedSets()) {
+					if (pos == colors.length) {
+						pos = 0;
 					}
-		}
+					Color color = colors[pos++];
+					for (String node : set)
+						for (CellView cv : graphComponent.getGraphLayoutCache().getAllViews())
+							if (cv.getCell() != null) {
+								if (node.equalsIgnoreCase(cv.getCell().toString())) {
+									GraphConstants.setBackground(cv.getAttributes(), color);
+									graphComponent.getGraphLayoutCache().edit(graphComponent.getModel().getAttributes(cv));
+									break;
+								}
+							}
+				}
+				return null;
+			}
+
+			@Override
+			protected void done() {
+				graphComponent.getGraphLayoutCache().edit(graphFacade.createNestedMap(true, true));
+			}
+
+		};
+
 	}
 
 	private SwingWorker stateWorker(final Vector<SwingWorker> workers) {
@@ -589,7 +616,7 @@ public class MainWindow extends javax.swing.JFrame {
 			    overwrite = reply != JOptionPane.NO_OPTION;
 		    }
 		    if (overwrite) {
-			    BufferedImage img = graphComponent.getImage(Color.lightGray, 20);
+			    BufferedImage img = graphComponent.getImage(Color.LIGHT_GRAY, 20);
 			    try {
 				    if (img == null) {
 					    throw new IOException("Unable to form image");
@@ -622,54 +649,22 @@ public class MainWindow extends javax.swing.JFrame {
 	    }
     }//GEN-LAST:event_printItmActionPerformed
 
-    private void edgeStyleItmStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_edgeStyleItmStateChanged
-	    readyStateBusy();
-	    Vector<SwingWorker> workers = new Vector<SwingWorker>();
-	    workers.add(edgeStyleWorker());
-	    for (SwingWorker worker : workers)
-		    worker.execute();
-	    stateWorker(workers).execute();
-    }//GEN-LAST:event_edgeStyleItmStateChanged
-
-	private void switchEdgeStyle(CellView cv) {
-		if (edgeStyleItm.isSelected()) {
-			GraphConstants.setLineStyle(cv.getAttributes(), GraphConstants.STYLE_SPLINE);
-			GraphConstants.setRouting(cv.getAttributes(), GraphConstants.ROUTING_SIMPLE);
-		} else {
-			Object[] keys = new Object[]{GraphConstants.ROUTING_SIMPLE};
-			GraphConstants.setRemoveAttributes(cv.getAttributes(), keys);
-			GraphConstants.setRouting(cv.getAttributes(), GraphConstants.ROUTING_DEFAULT);
-		}
-	}
-
     private void cyrcleRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cyrcleRadioActionPerformed
 	    readyStateBusy();
 	    graphLayout = new JGraphSimpleLayout(JGraphSimpleLayout.TYPE_CIRCLE, graphPane.getWidth(), graphPane.getHeight());
-	    Vector<SwingWorker> workers = new Vector<SwingWorker>();
-	    workers.add(visualizeGraphWorker());
-	    for (SwingWorker worker : workers)
-		    worker.execute();
-	    stateWorker(workers).execute();
+	    layoutChanged();
     }//GEN-LAST:event_cyrcleRadioActionPerformed
 
     private void tiltRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tiltRadioActionPerformed
 	    readyStateBusy();
 	    graphLayout = new JGraphSimpleLayout(JGraphSimpleLayout.TYPE_TILT, graphPane.getWidth(), graphPane.getHeight());
-	    Vector<SwingWorker> workers = new Vector<SwingWorker>();
-	    workers.add(visualizeGraphWorker());
-	    for (SwingWorker worker : workers)
-		    worker.execute();
-	    stateWorker(workers).execute();
+	    layoutChanged();
     }//GEN-LAST:event_tiltRadioActionPerformed
 
     private void randomRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomRadioActionPerformed
 	    readyStateBusy();
 	    graphLayout = new JGraphSimpleLayout(JGraphSimpleLayout.TYPE_RANDOM, graphPane.getWidth(), graphPane.getHeight());
-	    Vector<SwingWorker> workers = new Vector<SwingWorker>();
-	    workers.add(visualizeGraphWorker());
-	    for (SwingWorker worker : workers)
-		    worker.execute();
-	    stateWorker(workers).execute();
+	    layoutChanged();
     }//GEN-LAST:event_randomRadioActionPerformed
 
     private void organicRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_organicRadioActionPerformed
@@ -693,13 +688,17 @@ public class MainWindow extends javax.swing.JFrame {
 	    if (organic.isBorderLineSelected()) {
 		    ((JGraphOrganicLayout) graphLayout).setBorderLineCostFactor(organic.getBorderLineValue());
 	    }
-	    Vector<SwingWorker> workers = new Vector<SwingWorker>();
-	    workers.add(visualizeGraphWorker());
-	    for (SwingWorker worker : workers)
-		    worker.execute();
-	    stateWorker(workers).execute();
+	    layoutChanged();
     }//GEN-LAST:event_organicRadioActionPerformed
 
+	private void layoutChanged() {
+		Vector<SwingWorker> workers = new Vector<SwingWorker>();
+		workers.add(visualizeGraphWorker());
+		workers.add(colorfyWorker());
+		for (SwingWorker worker : workers)
+			worker.execute();
+		stateWorker(workers).execute();
+	}
     private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
 	    this.dispose();
 	    System.exit(0);
@@ -717,9 +716,35 @@ public class MainWindow extends javax.swing.JFrame {
 	    JOptionPane.showMessageDialog(this, authors, "Authors", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_authorsItmActionPerformed
 
-    private void debugItmStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_debugItmStateChanged
-	    AppDefs.DEBUG = debugItm.isSelected();
-    }//GEN-LAST:event_debugItmStateChanged
+    private void fastOrganicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fastOrganicActionPerformed
+	    readyStateBusy();
+	    graphLayout = new JGraphFastOrganicLayout();
+	    layoutChanged();
+    }//GEN-LAST:event_fastOrganicActionPerformed
+
+    private void edgeStyleCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edgeStyleCheckActionPerformed
+	    readyStateBusy();
+	    Vector<SwingWorker> workers = new Vector<SwingWorker>();
+	    workers.add(edgeStyleWorker());
+	    for (SwingWorker worker : workers)
+		    worker.execute();
+	    stateWorker(workers).execute();
+    }//GEN-LAST:event_edgeStyleCheckActionPerformed
+
+	private void switchEdgeStyle(CellView cv) {
+		if (edgeStyleCheck.isSelected()) {
+			GraphConstants.setLineStyle(cv.getAttributes(), GraphConstants.STYLE_SPLINE);
+			GraphConstants.setRouting(cv.getAttributes(), GraphConstants.ROUTING_SIMPLE);
+		} else {
+			Object[] keys = new Object[]{GraphConstants.ROUTING_SIMPLE};
+			GraphConstants.setRemoveAttributes(cv.getAttributes(), keys);
+			GraphConstants.setRouting(cv.getAttributes(), GraphConstants.ROUTING_DEFAULT);
+		}
+	}
+
+    private void debugCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_debugCheckActionPerformed
+	    AppDefs.DEBUG = debugCheck.isSelected();
+    }//GEN-LAST:event_debugCheckActionPerformed
 
 	private void clearFields() {
 		sccsNumberTextField.setText("");
@@ -742,11 +767,12 @@ public class MainWindow extends javax.swing.JFrame {
         private javax.swing.JMenuItem authorsItm;
         private javax.swing.JRadioButtonMenuItem cyrcleRadio;
         private javax.swing.JTextField datafileTextField;
-        private javax.swing.JCheckBoxMenuItem debugItm;
+        private javax.swing.JCheckBoxMenuItem debugCheck;
         private javax.swing.JLabel diameterLabel;
-        private javax.swing.JCheckBoxMenuItem edgeStyleItm;
+        private javax.swing.JCheckBoxMenuItem edgeStyleCheck;
         private javax.swing.JMenu editMenu;
         private javax.swing.JMenuItem exit;
+        private javax.swing.JRadioButtonMenuItem fastOrganic;
         private javax.swing.JMenu fileMenu;
         private javax.swing.JScrollPane graphPane;
         private javax.swing.JTextField greatestDiameterTextField;
