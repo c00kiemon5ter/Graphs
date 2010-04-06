@@ -534,7 +534,7 @@ public class MainWindow extends javax.swing.JFrame {
 	    File imgfile = null;
 	    fc = new JFileChooser();
 	    fc.setDragEnabled(true);
-	    int state = fc.showOpenDialog(this);
+	    int state = fc.showSaveDialog(this);
 	    if (state == JFileChooser.APPROVE_OPTION) {
 		    boolean overwrite = true;
 		    imgfile = new File(fc.getSelectedFile().getAbsolutePath() + ".png");
