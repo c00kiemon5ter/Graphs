@@ -85,7 +85,7 @@
             <Property name="text" type="java.lang.String" value="Edit"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="bendEdgeItm">
+            <MenuItem class="javax.swing.JCheckBoxMenuItem" name="edgeStyleItm">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+B"/>
@@ -93,7 +93,7 @@
                 <Property name="text" type="java.lang.String" value="Bend Edges"/>
               </Properties>
               <Events>
-                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="bendEdgeItmStateChanged"/>
+                <EventHandler event="stateChanged" listener="javax.swing.event.ChangeListener" parameters="javax.swing.event.ChangeEvent" handler="edgeStyleItmStateChanged"/>
               </Events>
             </MenuItem>
             <Menu class="javax.swing.JMenu" name="layoutsMenu">
