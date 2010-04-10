@@ -18,8 +18,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Set;
-import java.util.Vector;
-import java.util.concurrent.ExecutionException;
 import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -33,6 +31,8 @@ import org.jgrapht.ext.JGraphModelAdapter;
 import org.jgrapht.graph.ListenableDirectedGraph;
 
 public class MainWindow extends javax.swing.JFrame {
+	private int busytimes = 0;
+	private final boolean[] done = {false, false};
 	private File file;
 	private JFileChooser fc;
 	private OrganicOptionsDialog organic;
@@ -40,6 +40,7 @@ public class MainWindow extends javax.swing.JFrame {
 	private JGraphFacade graphFacade;
 	private JGraphLayout graphLayout;
 	private SCCFinder sccf;
+	private GraphFinder graphFinder;
 	private ListenableDirectedGraph<String, DefaultEdge> directedGraph;
 	private JGraphModelAdapter<String, DefaultEdge> graphModel;
 
@@ -405,78 +406,72 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void startButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 	    clearFields();
-	    readyStateBusy();
 	    createGraphWorker().execute();
+	    startButt.setEnabled(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
 	private SwingWorker createGraphWorker() {
-		return new SwingWorker<Boolean, Void>() {
+		return new SwingWorker<Void, Void>() {
 			@Override
-			protected Boolean doInBackground() throws Exception {
+			protected Void doInBackground() throws Exception {
+				readyStateBusy();
 				try {
 					DataReader dr = new DataReader(file);
 					if (dr.readFile()) {
 						directedGraph = (ListenableDirectedGraph<String, DefaultEdge>) dr.getDigraph();
-						return true;
 					}
 				} catch (FileNotFoundException fnfe) {
 					JOptionPane.showMessageDialog(getParent(), "Unable to read data\nPlease choose another file",
 								      "Error Reading File!", JOptionPane.ERROR_MESSAGE);
 					fnfe.printStackTrace();
 				}
-				return false;
+				return null;
 			}
 
 			@Override
 			public void done() {
-				try {
-					if (!get()) {
-						JOptionPane.showMessageDialog(getParent(), "Unable to process graph",
-									      "Error Processing!", JOptionPane.ERROR_MESSAGE);
-					}
-					Vector<SwingWorker> workers = new Vector<SwingWorker>();
-					workers.add(visualizeGraphWorker());
-					workers.add(computeGraphWorker());
-					workers.add(colorfyWorker());
-					for (SwingWorker worker : workers)
-						worker.execute();
-					stateWorker(workers).execute();
-					sccf = new SCCFinder(directedGraph);
-					int[] sccSizes = sccf.getSCCSizePerSubgraph();
-					sccsNumberTextField.setText(String.valueOf(sccSizes.length));
-					for (int sccNum = 0; sccNum < sccSizes.length; sccNum++)
-						sccSizesTextArea.append(String.format("%0" + String.valueOf(sccSizes.length).length()
-										      + "d. SCC size: %d\n", sccNum + 1, sccSizes[sccNum]));
-				} catch (InterruptedException ie) {
-					ie.printStackTrace();
-				} catch (ExecutionException ee) {
-					ee.printStackTrace();
+				if (directedGraph == null) {
+					JOptionPane.showMessageDialog(getParent(), "Unable to process graph",
+								      "Error Processing!", JOptionPane.ERROR_MESSAGE);
+					return;
 				}
+				readyStateOk();
+				visualizeGraphWorker().execute();
+				computeGraphWorker().execute();
+				sccf = new SCCFinder(directedGraph);
+				int[] sccSizes = sccf.getSCCSizePerSubgraph();
+				sccsNumberTextField.setText(String.valueOf(sccSizes.length));
+				for (int sccNum = 0; sccNum < sccSizes.length; sccNum++)
+					sccSizesTextArea.append(String.format("%0" + String.valueOf(sccSizes.length).length()
+									      + "d. SCC size: %d\n", sccNum + 1, sccSizes[sccNum]));
 			}
 
 		};
 	}
 
 	private SwingWorker computeGraphWorker() {
-		return new SwingWorker<GraphFinder, Void>() {
+		return new SwingWorker<Void, Void>() {
 			@Override
-			protected GraphFinder doInBackground() throws Exception {
-				return new GraphFinder(directedGraph, sccf);
+			protected Void doInBackground() throws Exception {
+				readyStateBusy();
+				graphFinder = new GraphFinder(directedGraph, sccf);
+				return null;
 			}
 
 			@Override
 			public void done() {
-				try {
-					GraphFinder gf = get();
-					if (gf == null) {
-						JOptionPane.showMessageDialog(getParent(), "Unable to compute graph",
-									      "Error Computing!", JOptionPane.ERROR_MESSAGE);
+				if (graphFinder == null) {
+					JOptionPane.showMessageDialog(getParent(), "Unable to compute graph",
+								      "Error Computing!", JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				greatestDiameterTextField.setText(String.valueOf(graphFinder.getGreatestDiameter()));
+				readyStateOk();
+				synchronized (done) {
+					done[0] = true;
+					if (done[1]) {
+						colorfyWorker().execute();
 					}
-					greatestDiameterTextField.setText(String.valueOf(gf.getGreatestDiameter()));
-				} catch (InterruptedException ie) {
-					ie.printStackTrace();
-				} catch (ExecutionException ee) {
-					ee.printStackTrace();
 				}
 			}
 
@@ -487,6 +482,7 @@ public class MainWindow extends javax.swing.JFrame {
 		return new SwingWorker<Void, Void>() {
 			@Override
 			protected Void doInBackground() throws Exception {
+				readyStateBusy();
 				initGraphComponents();
 				for (CellView cv : graphComponent.getGraphLayoutCache().getAllViews()) {
 					if (graphComponent.getModel().isEdge(cv.getCell())) {
@@ -507,7 +503,6 @@ public class MainWindow extends javax.swing.JFrame {
 				}
 				if (graphLayout == null) {
 					graphLayout = new JGraphFastOrganicLayout();
-					//graphLayout = new JGraphOrganicLayout(graphPane.getVisibleRect());
 				}
 				graphLayout.run(graphFacade);
 				return null;
@@ -516,8 +511,15 @@ public class MainWindow extends javax.swing.JFrame {
 			@Override
 			protected void done() {
 				graphComponent.getGraphLayoutCache().edit(graphFacade.createNestedMap(true, true));
+				readyStateOk();
 				imgItm.setEnabled(true);
 				printItm.setEnabled(true);
+				synchronized (done) {
+					done[1] = true;
+					if (done[0]) {
+						colorfyWorker().execute();
+					}
+				}
 			}
 
 		};
@@ -527,6 +529,7 @@ public class MainWindow extends javax.swing.JFrame {
 		return new SwingWorker<Void, Void>() {
 			@Override
 			protected Void doInBackground() throws Exception {
+				readyStateBusy();
 				int pos = 0;
 				Color[] colors = new Color[]{Color.BLACK, Color.BLUE, Color.CYAN,
 							     Color.DARK_GRAY, Color.GRAY, Color.GREEN,
@@ -553,37 +556,19 @@ public class MainWindow extends javax.swing.JFrame {
 			@Override
 			protected void done() {
 				graphComponent.getGraphLayoutCache().edit(graphFacade.createNestedMap(true, true));
-			}
-
-		};
-
-	}
-
-	private SwingWorker stateWorker(final Vector<SwingWorker> workers) {
-		return new SwingWorker<Void, Void>() {
-			@Override
-			protected Void doInBackground() throws Exception {
-				while (!workers.isEmpty()) {
-					for (SwingWorker worker : workers)
-						if (worker.isDone() || worker.isCancelled()) {
-							workers.remove(worker);
-						}
-				}
-				return null;
-			}
-
-			@Override
-			protected void done() {
 				readyStateOk();
+				startButt.setEnabled(true);
 			}
 
 		};
+
 	}
 
 	private SwingWorker edgeStyleWorker() {
 		return new SwingWorker<Void, Void>() {
 			@Override
 			protected Void doInBackground() throws Exception {
+				readyStateBusy();
 				for (CellView cv : graphComponent.getGraphLayoutCache().getAllViews()) {
 					switchEdgeStyle(cv);
 					graphComponent.getGraphLayoutCache().edit(graphComponent.getModel().getAttributes(cv));
@@ -596,6 +581,7 @@ public class MainWindow extends javax.swing.JFrame {
 				graphComponent.getGraphLayoutCache().refresh(graphComponent.getGraphLayoutCache().getAllViews(), true);
 				graphComponent.addOffscreenDirty(GraphLayoutCache.getBounds(graphComponent.getGraphLayoutCache().getAllViews()));
 				graphComponent.repaint();
+				readyStateOk();
 			}
 
 		};
@@ -650,25 +636,21 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_printItmActionPerformed
 
     private void cyrcleRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cyrcleRadioActionPerformed
-	    readyStateBusy();
 	    graphLayout = new JGraphSimpleLayout(JGraphSimpleLayout.TYPE_CIRCLE, graphPane.getWidth(), graphPane.getHeight());
-	    layoutChanged();
+	    visualizeGraphWorker().execute();
     }//GEN-LAST:event_cyrcleRadioActionPerformed
 
     private void tiltRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tiltRadioActionPerformed
-	    readyStateBusy();
 	    graphLayout = new JGraphSimpleLayout(JGraphSimpleLayout.TYPE_TILT, graphPane.getWidth(), graphPane.getHeight());
-	    layoutChanged();
+	    visualizeGraphWorker().execute();
     }//GEN-LAST:event_tiltRadioActionPerformed
 
     private void randomRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomRadioActionPerformed
-	    readyStateBusy();
 	    graphLayout = new JGraphSimpleLayout(JGraphSimpleLayout.TYPE_RANDOM, graphPane.getWidth(), graphPane.getHeight());
-	    layoutChanged();
+	    visualizeGraphWorker().execute();
     }//GEN-LAST:event_randomRadioActionPerformed
 
     private void organicRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_organicRadioActionPerformed
-	    readyStateBusy();
 	    graphLayout = new JGraphOrganicLayout(graphPane.getVisibleRect());
 	    organic.setVisible(true);
 	    ((JGraphOrganicLayout) graphLayout).setFineTuning(true);
@@ -688,17 +670,9 @@ public class MainWindow extends javax.swing.JFrame {
 	    if (organic.isBorderLineSelected()) {
 		    ((JGraphOrganicLayout) graphLayout).setBorderLineCostFactor(organic.getBorderLineValue());
 	    }
-	    layoutChanged();
+	    visualizeGraphWorker().execute();
     }//GEN-LAST:event_organicRadioActionPerformed
 
-	private void layoutChanged() {
-		Vector<SwingWorker> workers = new Vector<SwingWorker>();
-		workers.add(visualizeGraphWorker());
-		workers.add(colorfyWorker());
-		for (SwingWorker worker : workers)
-			worker.execute();
-		stateWorker(workers).execute();
-	}
     private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
 	    this.dispose();
 	    System.exit(0);
@@ -717,18 +691,12 @@ public class MainWindow extends javax.swing.JFrame {
     }//GEN-LAST:event_authorsItmActionPerformed
 
     private void fastOrganicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fastOrganicActionPerformed
-	    readyStateBusy();
 	    graphLayout = new JGraphFastOrganicLayout();
-	    layoutChanged();
+	    visualizeGraphWorker().execute();
     }//GEN-LAST:event_fastOrganicActionPerformed
 
     private void edgeStyleCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edgeStyleCheckActionPerformed
-	    readyStateBusy();
-	    Vector<SwingWorker> workers = new Vector<SwingWorker>();
-	    workers.add(edgeStyleWorker());
-	    for (SwingWorker worker : workers)
-		    worker.execute();
-	    stateWorker(workers).execute();
+	    edgeStyleWorker().execute();
     }//GEN-LAST:event_edgeStyleCheckActionPerformed
 
 	private void switchEdgeStyle(CellView cv) {
@@ -753,13 +721,17 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
 	private void readyStateBusy() {
+		busytimes++;
 		ready.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/flag-red.png")));
 		ready.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/flag-red.png")));
 	}
 
 	private void readyStateOk() {
-		ready.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/flag-green.png")));
-		ready.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/flag-green.png")));
+		if (--busytimes <= 0) {
+			ready.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/flag-green.png")));
+			ready.setDisabledIcon(new javax.swing.ImageIcon(getClass().getResource("/Icons/flag-green.png")));
+			busytimes = 0;
+		}
 	}
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
