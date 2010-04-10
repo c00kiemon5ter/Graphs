@@ -406,6 +406,10 @@ public class MainWindow extends javax.swing.JFrame {
 
     private void startButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 	    clearFields();
+	    synchronized (done) {
+		    done[0] = false;
+		    done[1] = false;
+	    }
 	    createGraphWorker().execute();
 	    startButt.setEnabled(false);
     }//GEN-LAST:event_jButton2ActionPerformed
