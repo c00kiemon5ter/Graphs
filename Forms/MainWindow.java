@@ -32,6 +32,8 @@ import org.jgrapht.graph.ListenableDirectedGraph;
 
 public class MainWindow extends javax.swing.JFrame {
 	private int busytimes = 0;
+	private final int computeWorkerDone = 0;
+	private final int visualWorkerDone = 1;
 	private final boolean[] done = {false, false};
 	private File file;
 	private JFileChooser fc;
@@ -472,8 +474,8 @@ public class MainWindow extends javax.swing.JFrame {
 				greatestDiameterTextField.setText(String.valueOf(graphFinder.getGreatestDiameter()));
 				readyStateOk();
 				synchronized (done) {
-					done[0] = true;
-					if (done[1]) {
+					done[computeWorkerDone] = true;
+					if (done[visualWorkerDone]) {
 						colorfyWorker().execute();
 					}
 				}
@@ -519,8 +521,8 @@ public class MainWindow extends javax.swing.JFrame {
 				imgItm.setEnabled(true);
 				printItm.setEnabled(true);
 				synchronized (done) {
-					done[1] = true;
-					if (done[0]) {
+					done[visualWorkerDone] = true;
+					if (done[computeWorkerDone]) {
 						colorfyWorker().execute();
 					}
 				}
@@ -598,7 +600,10 @@ public class MainWindow extends javax.swing.JFrame {
 	    int state = fc.showSaveDialog(this);
 	    if (state == JFileChooser.APPROVE_OPTION) {
 		    boolean overwrite = true;
-		    imgfile = new File(fc.getSelectedFile().getAbsolutePath() + ".png");
+		    imgfile = new File(fc.getSelectedFile().getAbsolutePath());
+		    if (!imgfile.toString().endsWith(".png")) {
+			    imgfile = new File(imgfile.toString() + ".png");
+		    }
 		    if (imgfile.exists()) {
 			    int reply = JOptionPane.showConfirmDialog(this, "File exists. Overwrite ?",
 								      "Overwrite", JOptionPane.YES_NO_OPTION,
@@ -606,7 +611,7 @@ public class MainWindow extends javax.swing.JFrame {
 			    overwrite = reply != JOptionPane.NO_OPTION;
 		    }
 		    if (overwrite) {
-			    BufferedImage img = graphComponent.getImage(Color.LIGHT_GRAY, 20);
+			    BufferedImage img = graphComponent.getImage(Color.LIGHT_GRAY, 10);
 			    try {
 				    if (img == null) {
 					    throw new IOException("Unable to form image");
