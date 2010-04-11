@@ -5,6 +5,8 @@
  */
 package Forms;
 
+import java.awt.event.MouseWheelEvent;
+
 /**
  *
  * @author c00kiemon5ter
@@ -65,11 +67,21 @@ public class OrganicOptionsDialog extends javax.swing.JDialog {
                         }
                 });
 
-                edgeDistSpinner.setModel(new javax.swing.SpinnerNumberModel(0.5d, 0.0d, 1.0d, 0.1d));
+                edgeDistSpinner.setModel(new javax.swing.SpinnerNumberModel(50.0d, 0.0d, 10000.0d, 1.0d));
                 edgeDistSpinner.setEnabled(false);
+                edgeDistSpinner.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+                        public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                                edgeDistSpinnerMouseWheelMoved(evt);
+                        }
+                });
 
-                edgeCrossSpinner.setModel(new javax.swing.SpinnerNumberModel(0.5d, 0.0d, 1.0d, 0.1d));
+                edgeCrossSpinner.setModel(new javax.swing.SpinnerNumberModel(50.0d, 0.0d, 10000.0d, 1.0d));
                 edgeCrossSpinner.setEnabled(false);
+                edgeCrossSpinner.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+                        public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                                edgeCrossSpinnerMouseWheelMoved(evt);
+                        }
+                });
 
                 edgeDistLbl.setText("Cost Factor ");
 
@@ -96,8 +108,13 @@ public class OrganicOptionsDialog extends javax.swing.JDialog {
 
                 nodeDistributionLbl.setText("Cost Factor ");
 
-                nodeDistributionSpinner.setModel(new javax.swing.SpinnerNumberModel(0.5d, 0.0d, 1.0d, 0.1d));
+                nodeDistributionSpinner.setModel(new javax.swing.SpinnerNumberModel(50.0d, 0.0d, 10000.0d, 1.0d));
                 nodeDistributionSpinner.setEnabled(false);
+                nodeDistributionSpinner.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+                        public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                                nodeDistributionSpinnerMouseWheelMoved(evt);
+                        }
+                });
 
                 randomElements.setText("Make use of random elements (non deterministic output)");
 
@@ -110,13 +127,23 @@ public class OrganicOptionsDialog extends javax.swing.JDialog {
                         }
                 });
 
-                edgeLengthSpinner.setModel(new javax.swing.SpinnerNumberModel(0.5d, 0.0d, 1.0d, 0.1d));
+                edgeLengthSpinner.setModel(new javax.swing.SpinnerNumberModel(0.050000000000000044d, 0.0d, 1.0d, 0.01d));
                 edgeLengthSpinner.setEnabled(false);
+                edgeLengthSpinner.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+                        public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                                edgeLengthSpinnerMouseWheelMoved(evt);
+                        }
+                });
 
                 edgeLengthLbl.setText("Cost Factor ");
 
-                borderLineSpinner.setModel(new javax.swing.SpinnerNumberModel(0.5d, 0.0d, 1.0d, 0.1d));
+                borderLineSpinner.setModel(new javax.swing.SpinnerNumberModel(50.0d, 0.0d, 10000.0d, 1.0d));
                 borderLineSpinner.setEnabled(false);
+                borderLineSpinner.addMouseWheelListener(new java.awt.event.MouseWheelListener() {
+                        public void mouseWheelMoved(java.awt.event.MouseWheelEvent evt) {
+                                borderLineSpinnerMouseWheelMoved(evt);
+                        }
+                });
 
                 borderLineLbl.setText("Cost Factor ");
 
@@ -142,21 +169,21 @@ public class OrganicOptionsDialog extends javax.swing.JDialog {
                                                         .addComponent(edgeDist)
                                                         .addComponent(borderLine)
                                                         .addComponent(edgeCross))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(nodeDistributionLbl, javax.swing.GroupLayout.Alignment.TRAILING)
                                                         .addComponent(edgeDistLbl, javax.swing.GroupLayout.Alignment.TRAILING)
                                                         .addComponent(borderLineLbl, javax.swing.GroupLayout.Alignment.TRAILING)
                                                         .addComponent(edgeLengthLbl, javax.swing.GroupLayout.Alignment.TRAILING)
                                                         .addComponent(edgeCrossLbl, javax.swing.GroupLayout.Alignment.TRAILING))
-                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                                         .addComponent(ok, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                                         .addComponent(edgeCrossSpinner, javax.swing.GroupLayout.Alignment.TRAILING)
                                                         .addComponent(edgeDistSpinner, javax.swing.GroupLayout.Alignment.TRAILING)
                                                         .addComponent(borderLineSpinner, javax.swing.GroupLayout.Alignment.TRAILING)
                                                         .addComponent(edgeLengthSpinner, javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addComponent(nodeDistributionSpinner, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE))))
+                                                        .addComponent(nodeDistributionSpinner, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 47, Short.MAX_VALUE))))
                                 .addContainerGap())
                 );
 
@@ -230,6 +257,66 @@ public class OrganicOptionsDialog extends javax.swing.JDialog {
 	    this.setVisible(false);
 	    this.dispose();
     }//GEN-LAST:event_okActionPerformed
+
+    private void nodeDistributionSpinnerMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_nodeDistributionSpinnerMouseWheelMoved
+	    if (evt.getWheelRotation() < 0) {
+		    incrValue(nodeDistributionSpinner);
+	    } else {
+		    decrValue(nodeDistributionSpinner);
+	    }
+    }//GEN-LAST:event_nodeDistributionSpinnerMouseWheelMoved
+
+    private void edgeLengthSpinnerMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_edgeLengthSpinnerMouseWheelMoved
+	    if (evt.getWheelRotation() < 0) {
+		    incrValue(edgeLengthSpinner, 1);
+	    } else {
+		    decrValue(edgeLengthSpinner, 0);
+	    }
+    }//GEN-LAST:event_edgeLengthSpinnerMouseWheelMoved
+
+    private void edgeCrossSpinnerMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_edgeCrossSpinnerMouseWheelMoved
+	    if (evt.getWheelRotation() < 0) {
+		    incrValue(edgeCrossSpinner);
+	    } else {
+		    decrValue(edgeCrossSpinner);
+	    }
+    }//GEN-LAST:event_edgeCrossSpinnerMouseWheelMoved
+
+    private void edgeDistSpinnerMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_edgeDistSpinnerMouseWheelMoved
+	    if (evt.getWheelRotation() < 0) {
+		    incrValue(edgeDistSpinner);
+	    } else {
+		    decrValue(edgeDistSpinner);
+	    }
+    }//GEN-LAST:event_edgeDistSpinnerMouseWheelMoved
+
+    private void borderLineSpinnerMouseWheelMoved(java.awt.event.MouseWheelEvent evt) {//GEN-FIRST:event_borderLineSpinnerMouseWheelMoved
+	    if (evt.getWheelRotation() < 0) {
+		    incrValue(borderLineSpinner);
+	    } else {
+		    decrValue(borderLineSpinner);
+	    }
+    }//GEN-LAST:event_borderLineSpinnerMouseWheelMoved
+
+	private void incrValue(javax.swing.JSpinner spin) {
+		incrValue(spin, 10000);
+	}
+
+	private void incrValue(javax.swing.JSpinner spin, int hilimit) {
+		if ((Double) spin.getNextValue() <= hilimit) {
+			spin.setValue(spin.getNextValue());
+		}
+	}
+
+	private void decrValue(javax.swing.JSpinner spin) {
+		decrValue(spin, 0);
+	}
+
+	private void decrValue(javax.swing.JSpinner spin, int lowlimit) {
+		if ((Double) spin.getPreviousValue() >= lowlimit) {
+			spin.setValue(spin.getPreviousValue());
+		}
+	}
 
 	public boolean isRandom() {
 		return randomElements.isSelected();

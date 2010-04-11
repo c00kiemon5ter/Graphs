@@ -36,7 +36,7 @@
                           <Component id="borderLine" linkSize="1" alignment="0" min="-2" max="-2" attributes="0"/>
                           <Component id="edgeCross" linkSize="1" alignment="0" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="40" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="nodeDistributionLbl" linkSize="4" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="edgeDistLbl" linkSize="4" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -44,7 +44,7 @@
                           <Component id="edgeLengthLbl" linkSize="4" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="edgeCrossLbl" linkSize="4" alignment="1" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace pref="18" max="32767" attributes="0"/>
+                      <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
                           <Component id="ok" linkSize="3" alignment="1" max="32767" attributes="1"/>
                           <Component id="edgeCrossSpinner" linkSize="3" alignment="1" max="32767" attributes="1"/>
@@ -113,18 +113,24 @@
     <Component class="javax.swing.JSpinner" name="edgeDistSpinner">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="0.5" maximum="1.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.1" type="number"/>
+          <SpinnerModel initial="50.0" maximum="10000.0" minimum="0.0" numberType="java.lang.Double" stepSize="1.0" type="number"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseWheelMoved" listener="java.awt.event.MouseWheelListener" parameters="java.awt.event.MouseWheelEvent" handler="edgeDistSpinnerMouseWheelMoved"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JSpinner" name="edgeCrossSpinner">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="0.5" maximum="1.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.1" type="number"/>
+          <SpinnerModel initial="50.0" maximum="10000.0" minimum="0.0" numberType="java.lang.Double" stepSize="1.0" type="number"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseWheelMoved" listener="java.awt.event.MouseWheelListener" parameters="java.awt.event.MouseWheelEvent" handler="edgeCrossSpinnerMouseWheelMoved"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="edgeDistLbl">
       <Properties>
@@ -163,10 +169,13 @@
     <Component class="javax.swing.JSpinner" name="nodeDistributionSpinner">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="0.5" maximum="1.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.1" type="number"/>
+          <SpinnerModel initial="50.0" maximum="10000.0" minimum="0.0" numberType="java.lang.Double" stepSize="1.0" type="number"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseWheelMoved" listener="java.awt.event.MouseWheelListener" parameters="java.awt.event.MouseWheelEvent" handler="nodeDistributionSpinnerMouseWheelMoved"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JCheckBox" name="randomElements">
       <Properties>
@@ -189,10 +198,13 @@
     <Component class="javax.swing.JSpinner" name="edgeLengthSpinner">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="0.5" maximum="1.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.1" type="number"/>
+          <SpinnerModel initial="0.050000000000000044" maximum="1.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.01" type="number"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseWheelMoved" listener="java.awt.event.MouseWheelListener" parameters="java.awt.event.MouseWheelEvent" handler="edgeLengthSpinnerMouseWheelMoved"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="edgeLengthLbl">
       <Properties>
@@ -202,10 +214,13 @@
     <Component class="javax.swing.JSpinner" name="borderLineSpinner">
       <Properties>
         <Property name="model" type="javax.swing.SpinnerModel" editor="org.netbeans.modules.form.editors2.SpinnerModelEditor">
-          <SpinnerModel initial="0.5" maximum="1.0" minimum="0.0" numberType="java.lang.Double" stepSize="0.1" type="number"/>
+          <SpinnerModel initial="50.0" maximum="10000.0" minimum="0.0" numberType="java.lang.Double" stepSize="1.0" type="number"/>
         </Property>
         <Property name="enabled" type="boolean" value="false"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseWheelMoved" listener="java.awt.event.MouseWheelListener" parameters="java.awt.event.MouseWheelEvent" handler="borderLineSpinnerMouseWheelMoved"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="borderLineLbl">
       <Properties>
