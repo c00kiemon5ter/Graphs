@@ -225,9 +225,9 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Group type="103" groupAlignment="1" attributes="0">
-                  <Component id="graphPane" alignment="0" pref="536" max="32767" attributes="1"/>
-                  <Component id="infoPanel" alignment="0" min="0" max="32767" attributes="1"/>
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Component id="graphPane" alignment="1" pref="536" max="32767" attributes="1"/>
+                  <Component id="infoPanel" alignment="1" min="0" max="32767" attributes="1"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
           </Group>
@@ -237,10 +237,10 @@
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
-              <Component id="graphPane" pref="293" max="32767" attributes="0"/>
+              <Component id="graphPane" pref="291" max="32767" attributes="0"/>
               <EmptySpace max="-2" attributes="0"/>
               <Component id="infoPanel" min="-2" max="-2" attributes="0"/>
-              <EmptySpace min="-2" max="-2" attributes="0"/>
+              <EmptySpace max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -252,29 +252,39 @@
         <DimensionLayout dim="0">
           <Group type="103" groupAlignment="0" attributes="0">
               <Group type="102" attributes="0">
-                  <EmptySpace min="-2" pref="24" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="31" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="openButt" linkSize="5" pref="97" max="32767" attributes="1"/>
                           <EmptySpace max="-2" attributes="0"/>
                           <Component id="datafileTextField" min="-2" pref="143" max="-2" attributes="0"/>
                       </Group>
-                      <Group type="102" alignment="0" attributes="0">
+                      <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="startButt" linkSize="5" alignment="0" min="-2" max="-2" attributes="1"/>
-                              <Component id="sccNumLabel" linkSize="8" alignment="1" pref="165" max="32767" attributes="1"/>
                               <Component id="diameterLabel" linkSize="8" alignment="0" min="-2" max="-2" attributes="1"/>
+                              <Group type="102" alignment="0" attributes="0">
+                                  <Component id="sccLbl" linkSize="8" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace max="32767" attributes="0"/>
+                              </Group>
+                              <Component id="sccNumLabel" linkSize="8" alignment="0" pref="165" max="32767" attributes="1"/>
                           </Group>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="greatestDiameterTextField" linkSize="7" alignment="0" min="-2" pref="63" max="-2" attributes="1"/>
-                              <Component id="sccsNumberTextField" linkSize="7" alignment="0" min="-2" pref="69" max="-2" attributes="1"/>
-                              <Component id="sccSizeLabel" linkSize="7" alignment="0" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="1" attributes="0">
+                              <Component id="sccSizeLabel" linkSize="7" min="-2" max="-2" attributes="0"/>
+                              <Group type="102" alignment="1" attributes="0">
+                                  <EmptySpace min="13" pref="13" max="13" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Component id="greatestDiameterTextField" linkSize="7" alignment="0" min="-2" pref="63" max="-2" attributes="1"/>
+                                      <Component id="sccsNumberTextField" linkSize="7" alignment="0" min="-2" pref="69" max="-2" attributes="1"/>
+                                  </Group>
+                              </Group>
+                              <Component id="greatestSCCTextField" linkSize="7" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                  <Component id="jScrollPane2" pref="260" max="32767" attributes="0"/>
+                  <Component id="jScrollPane2" pref="252" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -289,7 +299,7 @@
                       <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="1" attributes="0">
-                              <Component id="jScrollPane2" alignment="0" pref="118" max="32767" attributes="2"/>
+                              <Component id="jScrollPane2" alignment="0" pref="162" max="32767" attributes="2"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="3" attributes="0">
                                       <Component id="openButt" linkSize="4" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -298,15 +308,23 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="sccSizeLabel" linkSize="4" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="sccsNumberTextField" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="sccNumLabel" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
+                                      <Group type="102" attributes="0">
+                                          <Component id="sccNumLabel" linkSize="1" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="diameterLabel" linkSize="1" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="sccLbl" linkSize="1" min="-2" max="-2" attributes="0"/>
+                                      </Group>
+                                      <Group type="102" attributes="0">
+                                          <Component id="sccsNumberTextField" linkSize="1" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="greatestDiameterTextField" linkSize="1" min="-2" max="-2" attributes="0"/>
+                                          <EmptySpace max="-2" attributes="0"/>
+                                          <Component id="greatestSCCTextField" linkSize="1" min="-2" max="-2" attributes="0"/>
+                                      </Group>
                                   </Group>
-                                  <EmptySpace max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="greatestDiameterTextField" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="diameterLabel" linkSize="1" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                                  <EmptySpace min="-2" max="-2" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
@@ -380,6 +398,16 @@
             </Component>
           </SubComponents>
         </Container>
+        <Component class="javax.swing.JLabel" name="sccLbl">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="greatest SCC&apos;s Size: "/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="greatestSCCTextField">
+          <Properties>
+            <Property name="editable" type="boolean" value="false"/>
+          </Properties>
+        </Component>
       </SubComponents>
     </Container>
     <Container class="javax.swing.JScrollPane" name="graphPane">

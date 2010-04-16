@@ -81,6 +81,8 @@ public class MainWindow extends javax.swing.JFrame {
                 datafileTextField = new javax.swing.JTextField();
                 jScrollPane2 = new javax.swing.JScrollPane();
                 sccSizesTextArea = new javax.swing.JTextArea();
+                sccLbl = new javax.swing.JLabel();
+                greatestSCCTextField = new javax.swing.JTextField();
                 graphPane = new javax.swing.JScrollPane(graphComponent);
                 menubar = new javax.swing.JMenuBar();
                 ready = new javax.swing.JMenu();
@@ -138,12 +140,16 @@ public class MainWindow extends javax.swing.JFrame {
                 sccSizesTextArea.setRows(5);
                 jScrollPane2.setViewportView(sccSizesTextArea);
 
+                sccLbl.setText("greatest SCC's Size: ");
+
+                greatestSCCTextField.setEditable(false);
+
                 javax.swing.GroupLayout infoPanelLayout = new javax.swing.GroupLayout(infoPanel);
                 infoPanel.setLayout(infoPanelLayout);
                 infoPanelLayout.setHorizontalGroup(
                         infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(infoPanelLayout.createSequentialGroup()
-                                .addGap(24, 24, 24)
+                                .addGap(31, 31, 31)
                                 .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(infoPanelLayout.createSequentialGroup()
                                                 .addComponent(openButt, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE)
@@ -152,22 +158,29 @@ public class MainWindow extends javax.swing.JFrame {
                                         .addGroup(infoPanelLayout.createSequentialGroup()
                                                 .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(startButt)
-                                                        .addComponent(sccNumLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
-                                                        .addComponent(diameterLabel))
+                                                        .addComponent(diameterLabel)
+                                                        .addGroup(infoPanelLayout.createSequentialGroup()
+                                                                .addComponent(sccLbl)
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                        .addComponent(sccNumLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE))
                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(greatestDiameterTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(sccsNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(sccSizeLabel))))
+                                                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                                        .addComponent(sccSizeLabel)
+                                                        .addGroup(infoPanelLayout.createSequentialGroup()
+                                                                .addGap(13, 13, 13)
+                                                                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(greatestDiameterTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                        .addComponent(sccsNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 69, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                        .addComponent(greatestSCCTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                                 .addGap(6, 6, 6)
-                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 260, Short.MAX_VALUE))
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 252, Short.MAX_VALUE))
                 );
 
                 infoPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {openButt, startButt});
 
-                infoPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {greatestDiameterTextField, sccSizeLabel, sccsNumberTextField});
+                infoPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {greatestDiameterTextField, greatestSCCTextField, sccSizeLabel, sccsNumberTextField});
 
-                infoPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {diameterLabel, sccNumLabel});
+                infoPanelLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {diameterLabel, sccLbl, sccNumLabel});
 
                 infoPanelLayout.setVerticalGroup(
                         infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -179,7 +192,7 @@ public class MainWindow extends javax.swing.JFrame {
                                         .addGroup(infoPanelLayout.createSequentialGroup()
                                                 .addContainerGap()
                                                 .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 118, Short.MAX_VALUE)
+                                                        .addComponent(jScrollPane2, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 162, Short.MAX_VALUE)
                                                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, infoPanelLayout.createSequentialGroup()
                                                                 .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                                                         .addComponent(openButt)
@@ -187,17 +200,24 @@ public class MainWindow extends javax.swing.JFrame {
                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                                                 .addComponent(sccSizeLabel)
                                                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                        .addComponent(sccsNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(sccNumLabel))
-                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                                                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                                                        .addComponent(greatestDiameterTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                                        .addComponent(diameterLabel))))))
+                                                                .addGroup(infoPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addGroup(infoPanelLayout.createSequentialGroup()
+                                                                                .addComponent(sccNumLabel)
+                                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                .addComponent(diameterLabel)
+                                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                .addComponent(sccLbl))
+                                                                        .addGroup(infoPanelLayout.createSequentialGroup()
+                                                                                .addComponent(sccsNumberTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                .addComponent(greatestDiameterTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                .addComponent(greatestSCCTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))))
                                 .addContainerGap())
                 );
 
-                infoPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {diameterLabel, greatestDiameterTextField, sccNumLabel, sccsNumberTextField});
+                infoPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {diameterLabel, greatestDiameterTextField, greatestSCCTextField, sccLbl, sccNumLabel, sccsNumberTextField});
 
                 infoPanelLayout.linkSize(javax.swing.SwingConstants.VERTICAL, new java.awt.Component[] {datafileTextField, openButt, sccSizeLabel, startButt});
 
@@ -355,16 +375,16 @@ public class MainWindow extends javax.swing.JFrame {
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(graphPane, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 536, Short.MAX_VALUE)
-                                        .addComponent(infoPanel, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(graphPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 536, Short.MAX_VALUE)
+                                        .addComponent(infoPanel, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addContainerGap())
                 );
                 layout.setVerticalGroup(
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(graphPane, javax.swing.GroupLayout.DEFAULT_SIZE, 293, Short.MAX_VALUE)
+                                .addComponent(graphPane, javax.swing.GroupLayout.DEFAULT_SIZE, 291, Short.MAX_VALUE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(infoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
@@ -472,6 +492,8 @@ public class MainWindow extends javax.swing.JFrame {
 					return;
 				}
 				greatestDiameterTextField.setText(String.valueOf(graphFinder.getGreatestDiameter()));
+				greatestSCCTextField.setText(String.format("%d (#%d)", graphFinder.getGreatestSccSize(),
+									   graphFinder.getGreatestSccIndex() + 1));
 				readyStateOk();
 				synchronized (done) {
 					done[computeWorkerDone] = true;
@@ -757,6 +779,7 @@ public class MainWindow extends javax.swing.JFrame {
         private javax.swing.JMenu fileMenu;
         private javax.swing.JScrollPane graphPane;
         private javax.swing.JTextField greatestDiameterTextField;
+        private javax.swing.JTextField greatestSCCTextField;
         private javax.swing.JMenuItem helpItm;
         private javax.swing.JMenuItem imgItm;
         private javax.swing.JPanel infoPanel;
@@ -771,6 +794,7 @@ public class MainWindow extends javax.swing.JFrame {
         private javax.swing.JMenuItem printItm;
         private javax.swing.JRadioButtonMenuItem randomRadio;
         private javax.swing.JMenu ready;
+        private javax.swing.JLabel sccLbl;
         private javax.swing.JLabel sccNumLabel;
         private javax.swing.JLabel sccSizeLabel;
         private javax.swing.JTextArea sccSizesTextArea;
