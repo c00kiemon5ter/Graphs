@@ -480,7 +480,7 @@ public class MainWindow extends javax.swing.JFrame {
 			@Override
 			protected Void doInBackground() throws Exception {
 				readyStateBusy();
-				graphFinder = new GraphFinder(directedGraph, sccf);
+				graphFinder = new GraphFinder(sccf);
 				return null;
 			}
 
@@ -563,7 +563,7 @@ public class MainWindow extends javax.swing.JFrame {
 							     Color.DARK_GRAY, Color.GRAY, Color.GREEN,
 							     Color.LIGHT_GRAY, Color.MAGENTA,
 							     Color.ORANGE, Color.RED};
-				for (Set<String> set : sccf.findStronglyConnectedSets()) {
+				for (Set<String> set : sccf.getStronglyConnectedSets()) {
 					if (pos == colors.length) {
 						pos = 0;
 					}

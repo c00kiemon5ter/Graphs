@@ -24,11 +24,11 @@ public class SCCFinder {
 		calcSCCSizePerSubgraph();
 	}
 
-	public List<DirectedSubgraph<String, DefaultEdge>> findStronglyConnectedSubgraphs() {
+	public List<DirectedSubgraph<String, DefaultEdge>> getStronglyConnectedSubgraphs() {
 		return StronglyConnectedSubgraphs;
 	}
 
-	public List<Set<String>> findStronglyConnectedSets() {
+	public List<Set<String>> getStronglyConnectedSets() {
 		return StronglyConnectedSets;
 	}
 
@@ -43,7 +43,7 @@ public class SCCFinder {
 	private void calcSCCSizePerSubgraph() {
 		sccSizes = new int[sccSize];
 		for (int pos = 0; pos < sccSize; pos++)
-			sccSizes[pos] = StronglyConnectedSubgraphs.get(pos).vertexSet().size();
+			sccSizes[pos] = StronglyConnectedSubgraphs.get(pos).edgeSet().size();
 	}
 
 }

@@ -1,66 +1,50 @@
 package Graphs;
 
-import java.util.Iterator;
-import java.util.Set;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgraph.graph.DefaultEdge;
+import org.jgrapht.graph.DirectedSubgraph;
 
 public class GraphFinder {
 	private DirectedGraph<String, DefaultEdge> digraph;
 	SCCFinder sccf;
+	private int sccIndex = 0;
 	private int maxdiameter = 0;
-	private Set<String> greatestScc;
+	private int greatestSccSize = 0;
+	private DirectedSubgraph<String, DefaultEdge> greatestScc = null;
 
-	public GraphFinder(DirectedGraph<String, DefaultEdge> graph, SCCFinder sccf) {
-		this.digraph = graph;
-		this.sccf = sccf;
-		calcDiameters();
-	}
-
-	private void calcDiameters() {
+	public GraphFinder(SCCFinder sccf) {
 		// find greater SCC
-		int greatestSccSize = 0;
-		greatestScc = null;
-		for (Set<String> subgraph : sccf.findStronglyConnectedSets())
-			if (greatestSccSize < subgraph.size()) {
-				greatestSccSize = subgraph.size();
+		for (DirectedSubgraph<String, DefaultEdge> subgraph : sccf.getStronglyConnectedSubgraphs())
+			if (greatestSccSize < subgraph.edgeSet().size()) {
+				greatestSccSize = subgraph.edgeSet().size();
 				greatestScc = subgraph;
 			}
 		// compute greatest SCC's diameter
-		Iterator<String> sourceVertexes = greatestScc.iterator();
-		while (sourceVertexes.hasNext()) {
-			String source = sourceVertexes.next();
-			Iterator<String> targetVertexes = greatestScc.iterator();
-			while (targetVertexes.hasNext()) {
-				String target = targetVertexes.next();
+		for (String source : greatestScc.vertexSet())
+			for (String target : greatestScc.vertexSet()) {
 				if (source.equals(target)) {
 					continue;
 				}
 				int diameter = DijkstraShortestPath.findPathBetween(
-					digraph, source, target).size();
+					greatestScc, source, target).size();
 				if (maxdiameter < diameter) {
 					maxdiameter = diameter;
 				}
-				if (AppDefs.DEBUG) {
-					System.out.format("SourceNode: %s\tTargetNode: %s"
-							  + "\tDiamtr: %d\tMaxDiamtr: %d\n",
-							  source, target, diameter, maxdiameter);
-				}
 			}
-		}
+		sccIndex = sccf.getStronglyConnectedSubgraphs().indexOf(greatestScc);
 	}
 
-	public Set<String> getGreatestScc() {
+	public DirectedSubgraph<String, DefaultEdge> getGreatestScc() {
 		return greatestScc;
 	}
 
 	public int getGreatestSccSize() {
-		return greatestScc.size();
+		return greatestSccSize;
 	}
 
 	public int getGreatestSccIndex() {
-		return sccf.findStronglyConnectedSets().indexOf(greatestScc);
+		return sccIndex;
 	}
 
 	public int getGreatestDiameter() {
