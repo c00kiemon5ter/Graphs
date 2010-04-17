@@ -12,11 +12,14 @@ public class Main {
 						      InstantiationException,
 						      IllegalAccessException,
 						      UnsupportedLookAndFeelException {
+		// enable antialiased fonts
 		System.setProperty("awt.useSystemAAFontSettings", "on");
+		// read cmd parameters
 		for (String arg : args)
 			if (arg.equals(AppDefs.DEBUG_SYMBOL)) {
 				AppDefs.DEBUG = true;
 			}
+		// set look and feel to GTK+|Windows Vista|systemLaf
 		boolean lafset = false;
 		for (UIManager.LookAndFeelInfo laf : UIManager.getInstalledLookAndFeels())
 			if (laf.getName().equalsIgnoreCase("GTK+")
@@ -28,11 +31,13 @@ public class Main {
 		if (!lafset) {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		}
+		// set and fix windows font style
+		UIManager.getDefaults().put("TextArea.font", UIManager.get("TextPane.font"));
 		javax.swing.SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
 				new MainWindow().setVisible(true);
-			}//run
+			}
 
 		});
 	}

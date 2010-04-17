@@ -1,11 +1,8 @@
 package Algos;
 
-import Graph.Node;
-import java.util.Iterator;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgraph.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedSubgraph;
-import org.jgrapht.traverse.BreadthFirstIterator;
 
 public class SccExplorer {
 	private int sccIndex = 0;
@@ -21,13 +18,13 @@ public class SccExplorer {
 				greatestScc = subgraph;
 			}
 		// compute greatest Scc's diameter
-		String source = greatestScc.vertexSet().iterator().next();
-		for (String target : greatestScc.vertexSet()) {
-			int diameter = DijkstraShortestPath.findPathBetween(greatestScc, source, target).size();
-			if (maxDiameter < diameter) {
-				maxDiameter = diameter;
+		for (String source : greatestScc.vertexSet())
+			for (String target : greatestScc.vertexSet()) {
+				int diameter = DijkstraShortestPath.findPathBetween(greatestScc, source, target).size();
+				if (maxDiameter < diameter) {
+					maxDiameter = diameter;
+				}
 			}
-		}
 		sccIndex = sccf.getStronglyConnectedSubgraphs().indexOf(greatestScc);
 	}
 
