@@ -1,4 +1,4 @@
-package Graphs;
+package Application;
 
 import Forms.MainWindow;
 import javax.swing.UIManager;

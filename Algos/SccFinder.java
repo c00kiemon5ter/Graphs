@@ -1,4 +1,4 @@
-package Graphs;
+package Algos;
 
 import java.util.List;
 import java.util.Set;
@@ -7,7 +7,7 @@ import org.jgrapht.DirectedGraph;
 import org.jgrapht.alg.StrongConnectivityInspector;
 import org.jgrapht.graph.DirectedSubgraph;
 
-public class SCCFinder {
+public class SccFinder {
 	private DirectedGraph<String, DefaultEdge> directedGraph;
 	private StrongConnectivityInspector<String, DefaultEdge> sci;
 	private List<DirectedSubgraph<String, DefaultEdge>> StronglyConnectedSubgraphs;
@@ -15,7 +15,7 @@ public class SCCFinder {
 	private int sccSize;
 	private int[] sccSizes;
 
-	public SCCFinder(DirectedGraph<String, DefaultEdge> directedGraph) {
+	public SccFinder(DirectedGraph<String, DefaultEdge> directedGraph) {
 		this.directedGraph = directedGraph;
 		sci = new StrongConnectivityInspector<String, DefaultEdge>(this.directedGraph);
 		StronglyConnectedSubgraphs = sci.stronglyConnectedSubgraphs();
