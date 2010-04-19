@@ -13,10 +13,16 @@ public class SccExplorer {
 	public SccExplorer(SccFinder sccf) {
 		// find greatest Scc
 		for (DirectedSubgraph<String, DefaultEdge> subgraph : sccf.getStronglyConnectedSubgraphs())
-			if (greatestSccSize < subgraph.edgeSet().size()) {
-				greatestSccSize = subgraph.edgeSet().size();
+			// greatest means most vertices
+			if (greatestSccSize < subgraph.vertexSet().size()) {
+				greatestSccSize = subgraph.vertexSet().size();
 				greatestScc = subgraph;
 			}
+//			// greatest means most edges
+//			if (greatestSccSize < subgraph.edgeSet().size()) {
+//				greatestSccSize = subgraph.edgeSet().size();
+//				greatestScc = subgraph;
+//			}
 		// compute greatest Scc's diameter
 		for (String source : greatestScc.vertexSet())
 			for (String target : greatestScc.vertexSet()) {

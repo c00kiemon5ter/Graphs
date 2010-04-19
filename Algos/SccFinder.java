@@ -43,7 +43,10 @@ public class SccFinder {
 	private void calcSCCSizePerSubgraph() {
 		sccSizes = new int[sccSize];
 		for (int pos = 0; pos < sccSize; pos++)
-			sccSizes[pos] = StronglyConnectedSubgraphs.get(pos).edgeSet().size();
+			// sizes as in vertex count
+			sccSizes[pos] = StronglyConnectedSubgraphs.get(pos).vertexSet().size();
+//			// sizes as in edge count
+//			sccSizes[pos] = StronglyConnectedSubgraphs.get(pos).edgeSet().size();
 	}
 
 }
