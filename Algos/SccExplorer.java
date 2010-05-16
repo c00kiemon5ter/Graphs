@@ -3,7 +3,7 @@ package Algos;
 
 import Graph.Node;
 import org.jgrapht.alg.DijkstraShortestPath;
-import org.jgraph.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedSubgraph;
 
 public class SccExplorer {

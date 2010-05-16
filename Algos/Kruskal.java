@@ -9,7 +9,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Kruskal {
-	public ArrayList<Edge> getMST(Node[] nodes, List<Edge> edges) {
+	public ArrayList<Edge> getMST(List<Node> nodes, List<Edge> edges) {
 		Collections.sort(edges);
 		ArrayList<Edge> MST = new ArrayList<Edge>(edges.size() / 2);
 		DisjointSet<Node> nodeset = new DisjointSet<Node>();

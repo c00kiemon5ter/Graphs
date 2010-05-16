@@ -2,7 +2,6 @@
 package Graph.list;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -17,10 +16,6 @@ public class DisjointSet<E> {
 
 	public DisjointSet() {
 		set = new LinkedList<ArrayList<E>>();
-	}
-
-	public void createSubsets(E[] items) {
-		createSubsets(Arrays.asList(items));
 	}
 
 	public void createSubsets(Collection<E> items) {

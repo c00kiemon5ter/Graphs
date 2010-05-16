@@ -4,22 +4,6 @@ import Graph.Node;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
-//public class Node {
-//
-//    private String name;
-//    public LinkedList<Node> neighbors;
-//    public boolean enqueued;
-//
-//    public Node(String name) {
-//        this.name = name;
-//        neighbors = new LinkedList<Node>();
-//    }
-//
-//    @Override
-//    public String toString() {
-//        return "Node: " + name;
-//    }
-//}
 public class BFS {
 	private int pathLength;
 

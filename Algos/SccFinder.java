@@ -4,20 +4,19 @@ import Graph.Node;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
-import org.jgraph.graph.DefaultEdge;
-import org.jgrapht.DirectedGraph;
+import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.alg.StrongConnectivityInspector;
 import org.jgrapht.graph.DirectedSubgraph;
+import org.jgrapht.graph.ListenableDirectedGraph;
 
 public class SccFinder {
-	private StrongConnectivityInspector<Node, DefaultEdge> sci;
 	private List<DirectedSubgraph<Node, DefaultEdge>> StronglyConnectedSubgraphs;
 	private List<Set<Node>> StronglyConnectedSets;
 	private int sccSize;
 	private int[] sccSizes;
 
-	public SccFinder(DirectedGraph<Node, DefaultEdge> directedGraph) {
-		sci = new StrongConnectivityInspector<Node, DefaultEdge>(directedGraph);
+	public SccFinder(ListenableDirectedGraph<Node, DefaultEdge> directedGraph) {
+		StrongConnectivityInspector<Node, DefaultEdge> sci = new StrongConnectivityInspector<Node, DefaultEdge>(directedGraph);
 		StronglyConnectedSubgraphs = sci.stronglyConnectedSubgraphs();
 		StronglyConnectedSets = sci.stronglyConnectedSets();
 		calcSCCSizePerSubgraph();

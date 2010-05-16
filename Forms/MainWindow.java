@@ -26,7 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import org.jgraph.JGraph;
 import org.jgraph.graph.CellView;
-import org.jgraph.graph.DefaultEdge;
+import org.jgrapht.graph.DefaultEdge;
 import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgrapht.ext.JGraphModelAdapter;
@@ -440,7 +440,8 @@ public class MainWindow extends javax.swing.JFrame {
 				try {
 					DataReader dr = new DataReader(file);
 					if (dr.readFile()) {
-						directedGraph = (ListenableDirectedGraph<Node, DefaultEdge>) dr.getDigraph();
+						directedGraph = new ListenableDirectedGraph<Node, DefaultEdge>(dr.getDirectedGraph());
+						directedGraph = (ListenableDirectedGraph<Node, DefaultEdge>) dr.getDirectedGraph();
 					}
 				} catch (FileNotFoundException fnfe) {
 					JOptionPane.showMessageDialog(getParent(), "Unable to read data\nPlease choose another file",
