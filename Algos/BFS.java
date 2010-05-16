@@ -46,11 +46,12 @@ public class BFS {
 				break;
 			} else {
 				// Enqueue new neighbors
-				for (Node neighbor : node.getNeighbors())
+				for (Node neighbor : node.getNeighbors()) {
 					if (!neighbor.isEnqueued()) {
 						neighbor.setEnqueued(true);
 						nextQueue.offer(neighbor);
 					}
+				}
 			}
 		}
 	}

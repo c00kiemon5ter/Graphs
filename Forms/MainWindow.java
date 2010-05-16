@@ -1,9 +1,11 @@
+
 package Forms;
 
 import Application.AppDefs;
-import Graph.DataReader;
+import IO.file.DataReader;
 import Algos.SccExplorer;
 import Algos.SccFinder;
+import Graph.Node;
 import com.jgraph.layout.JGraphFacade;
 import com.jgraph.layout.JGraphLayout;
 import com.jgraph.layout.graph.JGraphSimpleLayout;
@@ -43,8 +45,8 @@ public class MainWindow extends javax.swing.JFrame {
 	private JGraphLayout graphLayout;
 	private SccFinder sccf;
 	private SccExplorer graphFinder;
-	private ListenableDirectedGraph<String, DefaultEdge> directedGraph;
-	private JGraphModelAdapter<String, DefaultEdge> graphModel;
+	private ListenableDirectedGraph<Node, DefaultEdge> directedGraph;
+	private JGraphModelAdapter<Node, DefaultEdge> graphModel;
 
 	/** Creates new form MainWindow */
 	public MainWindow() {
@@ -55,8 +57,8 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
 	private void preInitCustom() {
-		directedGraph = new ListenableDirectedGraph<String, DefaultEdge>(DefaultEdge.class);
-		graphModel = new JGraphModelAdapter<String, DefaultEdge>(directedGraph);
+		directedGraph = new ListenableDirectedGraph<Node, DefaultEdge>(DefaultEdge.class);
+		graphModel = new JGraphModelAdapter<Node, DefaultEdge>(directedGraph);
 		graphComponent = new JGraph(graphModel);
 	}
 
@@ -390,12 +392,12 @@ public class MainWindow extends javax.swing.JFrame {
 	private void initCustomComponents() {
 		this.setIconImage(new javax.swing.ImageIcon(getClass().getResource(Application.AppDefs.MAIN_ICON)).getImage());
 		this.setLocationRelativeTo(null);
-		debugCheck.setSelected(AppDefs.DEBUG);
+		debugCheck.setSelected(AppDefs.isDEBUG());
 		organic = new OrganicOptionsDialog(this, true, false);
 	}
 
 	private void initGraphComponents() {
-		graphModel = new JGraphModelAdapter<String, DefaultEdge>(directedGraph);
+		graphModel = new JGraphModelAdapter<Node, DefaultEdge>(directedGraph);
 		graphComponent.setModel(graphModel);
 		graphComponent.setAntiAliased(true);
 		graphComponent.setEditable(false);
@@ -410,27 +412,27 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
     private void openButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-	    fc = new JFileChooser();
-	    fc.setDragEnabled(true);
-	    int state = fc.showOpenDialog(this);
-	    if (state == JFileChooser.APPROVE_OPTION) {
-		    file = fc.getSelectedFile();
-		    datafileTextField.setText(file.getName());
-		    startButt.setEnabled(true);
-	    }
+		fc = new JFileChooser();
+		fc.setDragEnabled(true);
+		int state = fc.showOpenDialog(this);
+		if (state == JFileChooser.APPROVE_OPTION) {
+			file = fc.getSelectedFile();
+			datafileTextField.setText(file.getName());
+			startButt.setEnabled(true);
+		}
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void startButtActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-	    clearFields();
-	    synchronized (done) {
-		    done[0] = false;
-		    done[1] = false;
-	    }
-	    createGraphWorker().execute();
-	    startButt.setEnabled(false);
+		clearFields();
+		synchronized (done) {
+			done[0] = false;
+			done[1] = false;
+		}
+		createGraphWorker().execute();
+		startButt.setEnabled(false);
     }//GEN-LAST:event_jButton2ActionPerformed
 
-	private SwingWorker createGraphWorker() {
+	private SwingWorker<Void, Void> createGraphWorker() {
 		return new SwingWorker<Void, Void>() {
 			@Override
 			protected Void doInBackground() throws Exception {
@@ -438,12 +440,12 @@ public class MainWindow extends javax.swing.JFrame {
 				try {
 					DataReader dr = new DataReader(file);
 					if (dr.readFile()) {
-						directedGraph = (ListenableDirectedGraph<String, DefaultEdge>) dr.getDigraph();
+						directedGraph = (ListenableDirectedGraph<Node, DefaultEdge>) dr.getDigraph();
 					}
 				} catch (FileNotFoundException fnfe) {
 					JOptionPane.showMessageDialog(getParent(), "Unable to read data\nPlease choose another file",
-								      "Error Reading File!", JOptionPane.ERROR_MESSAGE);
-					fnfe.printStackTrace();
+												  "Error Reading File!", JOptionPane.ERROR_MESSAGE);
+					//fnfe.printStackTrace();
 				}
 				return null;
 			}
@@ -452,7 +454,7 @@ public class MainWindow extends javax.swing.JFrame {
 			public void done() {
 				if (directedGraph == null) {
 					JOptionPane.showMessageDialog(getParent(), "Unable to process graph",
-								      "Error Processing!", JOptionPane.ERROR_MESSAGE);
+												  "Error Processing!", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				readyStateOk();
@@ -461,15 +463,16 @@ public class MainWindow extends javax.swing.JFrame {
 				sccf = new SccFinder(directedGraph);
 				int[] sccSizes = sccf.getSCCSizePerSubgraph();
 				sccsNumberTextField.setText(String.valueOf(sccSizes.length));
-				for (int sccNum = 0; sccNum < sccSizes.length; sccNum++)
+				for (int sccNum = 0; sccNum < sccSizes.length; sccNum++) {
 					sccSizesTextArea.append(String.format("%0" + String.valueOf(sccSizes.length).length()
-									      + "d. SCC size: %d\n", sccNum + 1, sccSizes[sccNum]));
+														  + "d. SCC size: %d\n", sccNum + 1, sccSizes[sccNum]));
+				}
 			}
 
 		};
 	}
 
-	private SwingWorker computeGraphWorker() {
+	private SwingWorker<Void, Void> computeGraphWorker() {
 		return new SwingWorker<Void, Void>() {
 			@Override
 			protected Void doInBackground() throws Exception {
@@ -482,13 +485,13 @@ public class MainWindow extends javax.swing.JFrame {
 			public void done() {
 				if (graphFinder == null) {
 					JOptionPane.showMessageDialog(getParent(), "Unable to compute graph",
-								      "Error Computing!", JOptionPane.ERROR_MESSAGE);
+												  "Error Computing!", JOptionPane.ERROR_MESSAGE);
 					return;
 				}
 				greatestDiameterTextField.setText(String.valueOf(graphFinder.getGreatestDiameter()));
 				greatestSccTextField.setText(String.format("%d (#%d)",
-									   graphFinder.getGreatestSccSize(),
-									   graphFinder.getGreatestSccIndex() + 1));
+														   graphFinder.getGreatestSccSize(),
+														   graphFinder.getGreatestSccIndex() + 1));
 				readyStateOk();
 				synchronized (done) {
 					done[computeWorkerDone] = true;
@@ -501,7 +504,7 @@ public class MainWindow extends javax.swing.JFrame {
 		};
 	}
 
-	private SwingWorker visualizeGraphWorker() {
+	private SwingWorker<Void, Void> visualizeGraphWorker() {
 		return new SwingWorker<Void, Void>() {
 			@Override
 			protected Void doInBackground() throws Exception {
@@ -548,30 +551,32 @@ public class MainWindow extends javax.swing.JFrame {
 		};
 	}
 
-	private SwingWorker colorfyWorker() {
+	private SwingWorker<Void, Void> colorfyWorker() {
 		return new SwingWorker<Void, Void>() {
 			@Override
 			protected Void doInBackground() throws Exception {
 				readyStateBusy();
 				int pos = 0;
 				Color[] colors = new Color[]{Color.BLACK, Color.BLUE, Color.CYAN,
-							     Color.DARK_GRAY, Color.GRAY, Color.GREEN,
-							     Color.LIGHT_GRAY, Color.MAGENTA,
-							     Color.ORANGE, Color.RED};
-				for (Set<String> set : sccf.getStronglyConnectedSets()) {
+											 Color.DARK_GRAY, Color.GRAY, Color.GREEN,
+											 Color.LIGHT_GRAY, Color.MAGENTA,
+											 Color.ORANGE, Color.RED};
+				for (Set<Node> set : sccf.getStronglyConnectedSets()) {
 					if (pos == colors.length) {
 						pos = 0;
 					}
 					Color color = colors[pos++];
-					for (String node : set)
-						for (CellView cv : graphComponent.getGraphLayoutCache().getAllViews())
+					for (Node node : set) {
+						for (CellView cv : graphComponent.getGraphLayoutCache().getAllViews()) {
 							if (cv.getCell() != null) {
-								if (node.equalsIgnoreCase(cv.getCell().toString())) {
+								if (node.toString().equalsIgnoreCase(cv.getCell().toString())) {
 									GraphConstants.setBackground(cv.getAttributes(), color);
 									graphComponent.getGraphLayoutCache().edit(graphComponent.getModel().getAttributes(cv));
 									break;
 								}
 							}
+						}
+					}
 				}
 				return null;
 			}
@@ -587,7 +592,7 @@ public class MainWindow extends javax.swing.JFrame {
 
 	}
 
-	private SwingWorker edgeStyleWorker() {
+	private SwingWorker<Void, Void> edgeStyleWorker() {
 		return new SwingWorker<Void, Void>() {
 			@Override
 			protected Void doInBackground() throws Exception {
@@ -611,118 +616,118 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
     private void imgItmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_imgItmActionPerformed
-	    File imgfile = null;
-	    fc = new JFileChooser();
-	    fc.setDragEnabled(true);
-	    int state = fc.showSaveDialog(this);
-	    if (state == JFileChooser.APPROVE_OPTION) {
-		    boolean overwrite = true;
-		    imgfile = new File(fc.getSelectedFile().getAbsolutePath());
-		    if (!imgfile.toString().endsWith(".png")) {
-			    imgfile = new File(imgfile.toString() + ".png");
-		    }
-		    if (imgfile.exists()) {
-			    int reply = JOptionPane.showConfirmDialog(this, "File exists. Overwrite ?",
-								      "Overwrite", JOptionPane.YES_NO_OPTION,
-								      JOptionPane.QUESTION_MESSAGE);
-			    overwrite = reply != JOptionPane.NO_OPTION;
-		    }
-		    if (overwrite) {
-			    BufferedImage img = graphComponent.getImage(Color.LIGHT_GRAY, 10);
-			    try {
-				    if (img == null) {
-					    throw new IOException("Unable to form image");
-				    }
-				    ImageIO.write(img, "png", imgfile);
-			    } catch (IOException ioe) {
-				    System.err.format("%s: Could save image as file: %s", this.getClass().getName(), imgfile);
-				    ioe.printStackTrace();
-				    JOptionPane.showMessageDialog(this, "Unable to save image\n"
-									+ "Please choose another location and/or file",
-								  "Error Writing File!", JOptionPane.ERROR_MESSAGE);
-			    }
-		    }
-	    }
+		File imgfile = null;
+		fc = new JFileChooser();
+		fc.setDragEnabled(true);
+		int state = fc.showSaveDialog(this);
+		if (state == JFileChooser.APPROVE_OPTION) {
+			boolean overwrite = true;
+			imgfile = new File(fc.getSelectedFile().getAbsolutePath());
+			if (!imgfile.toString().endsWith(".png")) {
+				imgfile = new File(imgfile.toString() + ".png");
+			}
+			if (imgfile.exists()) {
+				int reply = JOptionPane.showConfirmDialog(this, "File exists. Overwrite ?",
+														  "Overwrite", JOptionPane.YES_NO_OPTION,
+														  JOptionPane.QUESTION_MESSAGE);
+				overwrite = reply != JOptionPane.NO_OPTION;
+			}
+			if (overwrite) {
+				BufferedImage img = graphComponent.getImage(Color.LIGHT_GRAY, 10);
+				try {
+					if (img == null) {
+						throw new IOException("Unable to form image");
+					}
+					ImageIO.write(img, "png", imgfile);
+				} catch (IOException ioe) {
+					//System.err.format("%s: Could save image as file: %s", this.getClass().getName(), imgfile);
+					//ioe.printStackTrace();
+					JOptionPane.showMessageDialog(this, "Unable to save image\n"
+														+ "Please choose another location and/or file",
+												  "Error Writing File!", JOptionPane.ERROR_MESSAGE);
+				}
+			}
+		}
     }//GEN-LAST:event_imgItmActionPerformed
 
     private void printItmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printItmActionPerformed
-	    PrinterJob printJob = PrinterJob.getPrinterJob();
-	    printJob.setPrintable((Printable) graphPane);
-	    if (printJob.printDialog()) {
-		    try {
-			    printJob.print();
-		    } catch (PrinterException pe) {
-			    System.err.format("%s: Unable to print: %s", this.getClass().getName(), printJob.toString());
-			    pe.printStackTrace();
-			    JOptionPane.showMessageDialog(this, "Unable to print graph\n"
-								+ "Please check your printer state",
-							  "Error Printing!", JOptionPane.ERROR_MESSAGE);
-		    }
-	    }
+		PrinterJob printJob = PrinterJob.getPrinterJob();
+		printJob.setPrintable((Printable) graphPane);
+		if (printJob.printDialog()) {
+			try {
+				printJob.print();
+			} catch (PrinterException pe) {
+				//System.err.format("%s: Unable to print: %s", this.getClass().getName(), printJob.toString());
+				//pe.printStackTrace();
+				JOptionPane.showMessageDialog(this, "Unable to print graph\n"
+													+ "Please check your printer state",
+											  "Error Printing!", JOptionPane.ERROR_MESSAGE);
+			}
+		}
     }//GEN-LAST:event_printItmActionPerformed
 
     private void cyrcleRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cyrcleRadioActionPerformed
-	    graphLayout = new JGraphSimpleLayout(JGraphSimpleLayout.TYPE_CIRCLE, graphPane.getWidth(), graphPane.getHeight());
-	    visualizeGraphWorker().execute();
+		graphLayout = new JGraphSimpleLayout(JGraphSimpleLayout.TYPE_CIRCLE, graphPane.getWidth(), graphPane.getHeight());
+		visualizeGraphWorker().execute();
     }//GEN-LAST:event_cyrcleRadioActionPerformed
 
     private void tiltRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tiltRadioActionPerformed
-	    graphLayout = new JGraphSimpleLayout(JGraphSimpleLayout.TYPE_TILT, graphPane.getWidth(), graphPane.getHeight());
-	    visualizeGraphWorker().execute();
+		graphLayout = new JGraphSimpleLayout(JGraphSimpleLayout.TYPE_TILT, graphPane.getWidth(), graphPane.getHeight());
+		visualizeGraphWorker().execute();
     }//GEN-LAST:event_tiltRadioActionPerformed
 
     private void randomRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_randomRadioActionPerformed
-	    graphLayout = new JGraphSimpleLayout(JGraphSimpleLayout.TYPE_RANDOM, graphPane.getWidth(), graphPane.getHeight());
-	    visualizeGraphWorker().execute();
+		graphLayout = new JGraphSimpleLayout(JGraphSimpleLayout.TYPE_RANDOM, graphPane.getWidth(), graphPane.getHeight());
+		visualizeGraphWorker().execute();
     }//GEN-LAST:event_randomRadioActionPerformed
 
     private void organicRadioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_organicRadioActionPerformed
-	    graphLayout = new JGraphOrganicLayout(graphPane.getVisibleRect());
-	    organic.setVisible(true);
-	    ((JGraphOrganicLayout) graphLayout).setFineTuning(true);
-	    ((JGraphOrganicLayout) graphLayout).setDeterministic(!organic.isRandom());
-	    if (organic.isEdgeCrossSelected()) {
-		    ((JGraphOrganicLayout) graphLayout).setEdgeCrossingCostFactor(organic.getEdgeCrossValue());
-	    }
-	    if (organic.isEdgeDistSelected()) {
-		    ((JGraphOrganicLayout) graphLayout).setEdgeDistanceCostFactor(organic.getEdgeDistValue());
-	    }
-	    if (organic.isEdgeLengthSelected()) {
-		    ((JGraphOrganicLayout) graphLayout).setEdgeLengthCostFactor(organic.getsEdgeLengthValue());
-	    }
-	    if (organic.isNodeDistributionSelected()) {
-		    ((JGraphOrganicLayout) graphLayout).setNodeDistributionCostFactor(organic.getNodeDistributionValue());
-	    }
-	    if (organic.isBorderLineSelected()) {
-		    ((JGraphOrganicLayout) graphLayout).setBorderLineCostFactor(organic.getBorderLineValue());
-	    }
-	    visualizeGraphWorker().execute();
+		graphLayout = new JGraphOrganicLayout(graphPane.getVisibleRect());
+		organic.setVisible(true);
+		((JGraphOrganicLayout) graphLayout).setFineTuning(true);
+		((JGraphOrganicLayout) graphLayout).setDeterministic(!organic.isRandom());
+		if (organic.isEdgeCrossSelected()) {
+			((JGraphOrganicLayout) graphLayout).setEdgeCrossingCostFactor(organic.getEdgeCrossValue());
+		}
+		if (organic.isEdgeDistSelected()) {
+			((JGraphOrganicLayout) graphLayout).setEdgeDistanceCostFactor(organic.getEdgeDistValue());
+		}
+		if (organic.isEdgeLengthSelected()) {
+			((JGraphOrganicLayout) graphLayout).setEdgeLengthCostFactor(organic.getsEdgeLengthValue());
+		}
+		if (organic.isNodeDistributionSelected()) {
+			((JGraphOrganicLayout) graphLayout).setNodeDistributionCostFactor(organic.getNodeDistributionValue());
+		}
+		if (organic.isBorderLineSelected()) {
+			((JGraphOrganicLayout) graphLayout).setBorderLineCostFactor(organic.getBorderLineValue());
+		}
+		visualizeGraphWorker().execute();
     }//GEN-LAST:event_organicRadioActionPerformed
 
     private void exitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitActionPerformed
-	    this.dispose();
-	    System.exit(0);
+		this.dispose();
+		System.exit(0);
     }//GEN-LAST:event_exitActionPerformed
 
     private void helpItmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_helpItmActionPerformed
-	    String help = String.format("Usefull Phone Numbers:\n\n%s\n%s\n%s\n%s",
-					AppDefs.police, AppDefs.fires, AppDefs.calls, AppDefs.cars);
-	    JOptionPane.showMessageDialog(this, help, "Help", JOptionPane.INFORMATION_MESSAGE);
+		String help = String.format("Usefull Phone Numbers:\n\n%s\n%s\n%s\n%s",
+									AppDefs.police, AppDefs.fires, AppDefs.calls, AppDefs.cars);
+		JOptionPane.showMessageDialog(this, help, "Help", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_helpItmActionPerformed
 
     private void authorsItmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_authorsItmActionPerformed
-	    String authors = String.format("Authors:\n\n%s\n%s\n\n%s",
-					   AppDefs.c00kie, AppDefs.master, AppDefs.fortune);
-	    JOptionPane.showMessageDialog(this, authors, "Authors", JOptionPane.INFORMATION_MESSAGE);
+		String authors = String.format("Authors:\n\n%s\n%s\n\n%s",
+									   AppDefs.c00kie, AppDefs.master, AppDefs.fortune);
+		JOptionPane.showMessageDialog(this, authors, "Authors", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_authorsItmActionPerformed
 
     private void fastOrganicActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_fastOrganicActionPerformed
-	    graphLayout = new JGraphFastOrganicLayout();
-	    visualizeGraphWorker().execute();
+		graphLayout = new JGraphFastOrganicLayout();
+		visualizeGraphWorker().execute();
     }//GEN-LAST:event_fastOrganicActionPerformed
 
     private void edgeStyleCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edgeStyleCheckActionPerformed
-	    edgeStyleWorker().execute();
+		edgeStyleWorker().execute();
     }//GEN-LAST:event_edgeStyleCheckActionPerformed
 
 	private void switchEdgeStyle(CellView cv) {
@@ -737,7 +742,7 @@ public class MainWindow extends javax.swing.JFrame {
 	}
 
     private void debugCheckActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_debugCheckActionPerformed
-	    AppDefs.DEBUG = debugCheck.isSelected();
+		AppDefs.setDEBUG(debugCheck.isSelected());
     }//GEN-LAST:event_debugCheckActionPerformed
 
 	private void clearFields() {

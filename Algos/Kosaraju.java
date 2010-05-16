@@ -1,6 +1,7 @@
+
 package Algos;
 
-import Graph.AdjacencyList;
+import Graph.list.AdjacencyList;
 import Graph.Node;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -43,10 +44,11 @@ public class Kosaraju {
 			}
 			return;
 		}
-		for (DefaultEdge edge : list.getAdjacent(root))
+		for (DefaultEdge edge : list.getAdjacent(root)) {
 			if (((Node) edge.getTarget()).isVisited() != forward) {
 				search((Node) edge.getTarget(), list, forward);
 			}
+		}
 		if (forward) {
 			stack.add(0, root);
 		}

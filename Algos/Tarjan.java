@@ -1,6 +1,6 @@
 package Algos;
 
-import Graph.AdjacencyList;
+import Graph.list.AdjacencyList;
 import Graph.Node;
 import java.util.ArrayList;
 import org.jgraph.graph.DefaultEdge;

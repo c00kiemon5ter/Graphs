@@ -1,5 +1,7 @@
 package Algos;
 
+import Graph.Node;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import org.jgraph.graph.DefaultEdge;
@@ -8,28 +10,25 @@ import org.jgrapht.alg.StrongConnectivityInspector;
 import org.jgrapht.graph.DirectedSubgraph;
 
 public class SccFinder {
-	private DirectedGraph<String, DefaultEdge> directedGraph;
-	private StrongConnectivityInspector<String, DefaultEdge> sci;
-	private List<DirectedSubgraph<String, DefaultEdge>> StronglyConnectedSubgraphs;
-	private List<Set<String>> StronglyConnectedSets;
+	private StrongConnectivityInspector<Node, DefaultEdge> sci;
+	private List<DirectedSubgraph<Node, DefaultEdge>> StronglyConnectedSubgraphs;
+	private List<Set<Node>> StronglyConnectedSets;
 	private int sccSize;
 	private int[] sccSizes;
 
-	public SccFinder(DirectedGraph<String, DefaultEdge> directedGraph) {
-		this.directedGraph = directedGraph;
-		sci = new StrongConnectivityInspector<String, DefaultEdge>(this.directedGraph);
+	public SccFinder(DirectedGraph<Node, DefaultEdge> directedGraph) {
+		sci = new StrongConnectivityInspector<Node, DefaultEdge>(directedGraph);
 		StronglyConnectedSubgraphs = sci.stronglyConnectedSubgraphs();
 		StronglyConnectedSets = sci.stronglyConnectedSets();
-		sccSize = StronglyConnectedSets.size();
 		calcSCCSizePerSubgraph();
 	}
 
-	public List<DirectedSubgraph<String, DefaultEdge>> getStronglyConnectedSubgraphs() {
-		return StronglyConnectedSubgraphs;
+	public List<DirectedSubgraph<Node, DefaultEdge>> getStronglyConnectedSubgraphs() {
+		return Collections.unmodifiableList(StronglyConnectedSubgraphs);
 	}
 
-	public List<Set<String>> getStronglyConnectedSets() {
-		return StronglyConnectedSets;
+	public List<Set<Node>> getStronglyConnectedSets() {
+		return Collections.unmodifiableList(StronglyConnectedSets);
 	}
 
 	public int getSCCSize() {
@@ -41,10 +40,11 @@ public class SccFinder {
 	}
 
 	private void calcSCCSizePerSubgraph() {
+		sccSize = StronglyConnectedSets.size();
 		sccSizes = new int[sccSize];
-		for (int pos = 0; pos < sccSize; pos++)
-			// sizes as in vertex count
+		for (int pos = 0; pos < sccSize; pos++) {
 			sccSizes[pos] = StronglyConnectedSubgraphs.get(pos).vertexSet().size();
+		}
 //			// sizes as in edge count
 //			sccSizes[pos] = StronglyConnectedSubgraphs.get(pos).edgeSet().size();
 	}
